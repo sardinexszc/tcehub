@@ -1,0 +1,52 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@layer base {
+  :root {
+    --background: 0 0% 98%;
+    --foreground: 240 12% 8%;
+    --surface: 0 0% 100%;
+    --muted: 220 9% 40%;
+    --border: 220 13% 86%;
+  }
+  .dark {
+    --background: 240 15% 5%;
+    --foreground: 240 11% 96%;
+    --surface: 240 11% 9%;
+    --muted: 218 11% 65%;
+    --border: 240 7% 19%;
+  }
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-background;
+  }
+  ::selection {
+    background: #e11d2e;
+    color: white;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+}
+@layer components {
+  .container-shell {
+    @apply mx-auto w-full max-w-7xl px-5 md:px-8;
+  }
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+  }
+  .page-title {
+    @apply text-4xl font-semibold tracking-tight md:text-6xl;
+  }
+  .section-space {
+    @apply py-12 md:py-20;
+  }
+  .content-grid {
+    @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
+  }
+}
