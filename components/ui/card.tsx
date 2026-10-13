@@ -5,17 +5,14 @@ export function Card({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn(
-        'overflow-hidden rounded-xl border bg-surface transition-[border-color,box-shadow] duration-300',
-        className,
-      )}
+      className={cn('border-t border-foreground pt-4', className)}
       {...props}
     />
   );
 }
 export function CardHeader(props: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className="p-5 pb-2" {...props} />;
+  return <div className="pb-2" {...props} />;
 }
 export function CardContent(props: React.HTMLAttributes<HTMLDivElement>) {
-  return <div className="p-5" {...props} />;
+  return <div {...props} />;
 }

@@ -36,15 +36,20 @@ export default async function Page({
       content={item.content}
       kind="Guides"
       toc={true}
+      tint="cream"
     >
-      <section className="section-space mt-14 border-t">
-        <SectionHeading title="Keep exploring" />
+      <section className="section-space">
+        <SectionHeading
+          kicker="Keep exploring"
+          title="More guides"
+          href="/guides"
+        />
         <div className="content-grid">
           {guides
             .filter((i) => i.id !== item.id)
             .slice(0, 3)
-            .map((i) => (
-              <GuideCard key={i.id} guide={i} />
+            .map((i, n) => (
+              <GuideCard key={i.id} guide={i} index={n} />
             ))}
         </div>
       </section>

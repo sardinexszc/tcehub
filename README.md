@@ -30,16 +30,16 @@ Open http://localhost:3000. No environment values are needed for local browsing.
 - `app/(public)`: Home, shops, journals, events, galleries, guides, about, contact; shared navbar/footer
 - `app/(admin)/admin`: separate dashboard/sidebar, four content tables, settings shell
 - `components/ui`: shadcn-style Radix/CVA primitives, configured through `components.json`
-- `components`: cards, filtering, pagination, drawer, lightbox, content rendering, metadata factory, tables
+- `components`: editorial cards, text filters, split layouts, menu overlay, lightbox, content rendering, metadata factory, tables
 - `lib/mock-data.ts`: typed content arrays (8 shops, 6 journals, 8 events, 6 galleries, 6 guides)
-- `public/images`: original SVG placeholders; replace with licensed community photography
+- `public/images`: WebP illustrations of the owner's Camry by STXNCED, purchased and licensed for use on TCEHub (credit STXNCED wherever they appear)
 - `app/sitemap.ts`, `app/robots.ts`: public discovery; admin excluded
 
 `SEO()` wraps Next.js server metadata; it is not a head-tag client component. Detail routes pre-render their mock slugs and call `notFound()` for unknown records. Images use `next/image`. Fonts use Next.js Geist and Geist Mono optimization. The interface is light-only; design tokens live in `app/globals.css` and `tailwind.config.ts`.
 
 ## Preview behavior
 
-Directory search, category/generation/region filters, reset, and pagination work locally. Journal tag and guide generation filters work. Event tabs use a fixed demo reference date (October 13, 2026) so upcoming/past examples remain reproducible. Gallery lightboxes support keyboard controls. Admin tables support search, sort, and pagination; Add/Edit/Delete are intentionally disabled. Contact form validates using react-hook-form + zod and explicitly reports that nothing was sent or saved. Demo shop contact actions and calendar actions are disabled. Social links await real destinations.
+Directory search plus service/generation filters work locally, grouped by region. Journal tag and guide generation filters work. Event tabs use a fixed demo reference date (October 13, 2026) so upcoming/past examples remain reproducible. Gallery lightboxes support keyboard controls. Admin tables support search, sort, and pagination; Add/Edit/Delete are intentionally disabled. Contact form validates using react-hook-form + zod and explicitly reports that nothing was sent or saved. Demo shop contact actions and calendar actions are disabled. Social links await real destinations.
 
 Admin is an unprotected, read-only shell, as requested. Do not connect privileged mutations until a future access-control phase. Robots exclusion and noindex metadata are discovery controls, not authorization.
 

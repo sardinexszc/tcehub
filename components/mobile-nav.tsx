@@ -3,77 +3,54 @@ import { useState } from 'react';
 import * as Dialog from '@radix-ui/react-dialog';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ArrowUpRight } from 'lucide-react';
 import { navigation } from '@/lib/navigation';
-import { LogoMark } from '@/components/logo';
-import { Button } from '@/components/ui/button';
 export function MobileNav() {
   const [open, setOpen] = useState(false);
   const path = usePathname();
   return (
     <Dialog.Root open={open} onOpenChange={setOpen}>
-      <Dialog.Trigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="lg:hidden"
-          aria-label="Open navigation"
-        >
-          <Menu size={22} aria-hidden="true" />
-        </Button>
+      <Dialog.Trigger className="-mr-2 cursor-pointer px-2 py-3 transition-opacity hover:opacity-60 lg:hidden">
+        Menu
       </Dialog.Trigger>
       <Dialog.Portal>
-        <Dialog.Overlay className="fixed inset-0 z-50 bg-foreground/40 backdrop-blur-sm" />
-        <Dialog.Content className="fixed right-0 top-0 z-50 flex h-dvh w-[min(340px,92vw)] flex-col border-l bg-background p-5">
-          <div className="flex items-center gap-2.5">
-            <LogoMark />
-            <Dialog.Title className="text-[17px] font-semibold tracking-[-0.03em]">
-              TCEHub
-            </Dialog.Title>
+        <Dialog.Content className="fixed inset-0 z-50 flex flex-col bg-background px-4 pb-6">
+          <div className="flex h-14 items-center justify-between text-[15px]">
+            <Dialog.Title>TCEHub</Dialog.Title>
+            <Dialog.Close className="-mr-2 cursor-pointer px-2 py-3 transition-opacity hover:opacity-60">
+              Close
+            </Dialog.Close>
           </div>
-          <Dialog.Description className="meta mt-3">
-            Toyota Camry Elite Hub
+          <Dialog.Description className="sr-only">
+            Site navigation
           </Dialog.Description>
-          <Dialog.Close asChild>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="absolute right-3 top-3"
-              aria-label="Close navigation"
-            >
-              <X size={20} aria-hidden="true" />
-            </Button>
-          </Dialog.Close>
-          <nav className="hairline-grid mt-8" aria-label="Mobile navigation">
-            {[...navigation, ['About', '/about'], ['Contact', '/contact']].map(
-              ([label, href], i) => {
-                const active = path.startsWith(href);
-                return (
+          <nav aria-label="Mobile navigation" className="mt-8 flex-1">
+            <ul className="rule-list">
+              {[
+                ...navigation,
+                ['About', '/about'],
+                ['Contact', '/contact'],
+              ].map(([label, href], i) => (
+                <li key={href}>
                   <Link
-                    key={href}
                     href={href}
-                    aria-current={active ? 'page' : undefined}
                     onClick={() => setOpen(false)}
-                    className={`flex items-center justify-between px-4 py-3.5 text-[15px] transition-colors ${active ? '!bg-accent font-medium' : 'hover:!bg-subtle'}`}
+                    aria-current={path.startsWith(href) ? 'page' : undefined}
+                    className="flex items-baseline justify-between py-3 font-serif text-4xl tracking-[-0.03em] aria-[current=page]:italic"
                   >
                     {label}
-                    <span
-                      aria-hidden="true"
-                      className="font-mono text-[10px] text-muted"
-                    >
-                      {String(i + 1).padStart(2, '0')}
+                    <span className="font-sans text-[13px] tracking-normal">
+                      ({i + 1})
                     </span>
                   </Link>
-                );
-              },
-            )}
+                </li>
+              ))}
+            </ul>
           </nav>
-          <Button asChild variant="ink" className="mt-auto w-full">
-            <Link href="/contact#submit-shop" onClick={() => setOpen(false)}>
-              Submit a Shop
-              <ArrowUpRight size={16} aria-hidden="true" />
-            </Link>
-          </Button>
+          <p className="meta">
+            Good cars & better company
+            <br />
+            (Made in the Philippines)
+          </p>
         </Dialog.Content>
       </Dialog.Portal>
     </Dialog.Root>

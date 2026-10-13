@@ -3,8 +3,6 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
 const schema = z.object({
   name: z.string().trim().min(2, 'Enter your name.'),
   email: z.string().email('Enter a valid email.'),
@@ -13,6 +11,8 @@ const schema = z.object({
   message: z.string().trim().min(15, 'Please include at least 15 characters.'),
 });
 type Values = z.infer<typeof schema>;
+const field =
+  'w-full border-0 border-b border-foreground bg-transparent px-0 py-2 font-serif text-2xl tracking-[-0.02em] placeholder:text-muted/60 focus-visible:ring-0 focus-visible:ring-offset-0 aria-[invalid=true]:border-danger';
 export function ContactForm() {
   const [done, setDone] = useState(false);
   const {
@@ -22,23 +22,22 @@ export function ContactForm() {
     reset,
   } = useForm<Values>({ resolver: zodResolver(schema) });
   return done ? (
-    <div role="status" className="rounded-xl border bg-surface p-8">
-      <h2 className="text-2xl font-medium tracking-[-0.02em]">
-        Your form looks good.
+    <div role="status" className="border-y border-foreground py-10">
+      <h2 className="font-serif text-4xl tracking-[-0.03em]">
+        (Thank you) — your form looks good.
       </h2>
-      <p className="mt-3 leading-7 text-muted">
+      <p className="mt-3 text-[15px] text-muted">
         This preview validated the form locally. Nothing was sent or saved.
       </p>
-      <Button
-        className="mt-6"
-        variant="outline"
+      <button
+        className="link-u mt-6 cursor-pointer text-[15px]"
         onClick={() => {
           setDone(false);
           reset();
         }}
       >
-        Try another submission
-      </Button>
+        Try another submission →
+      </button>
     </div>
   ) : (
     <form
@@ -48,7 +47,7 @@ export function ContactForm() {
           true,
         ); /* TODO: replace with a server-side submission workflow. */
       })}
-      className="space-y-5"
+      className="grid gap-8"
     >
       {(
         [
@@ -57,17 +56,18 @@ export function ContactForm() {
           ['shop', 'Shop name'],
           ['city', 'City'],
         ] as const
-      ).map(([key, label]) => (
+      ).map(([key, label], i) => (
         <div key={key}>
-          <label htmlFor={key} className="mb-2 block text-sm font-medium">
-            {label}
+          <label htmlFor={key} className="block text-[15px]">
+            ({String(i + 1).padStart(2, '0')}) {label}
           </label>
-          <Input
+          <input
             id={key}
             type={key === 'email' ? 'email' : 'text'}
             autoComplete={
               key === 'name' ? 'name' : key === 'email' ? 'email' : 'off'
             }
+            className={field}
             {...register(key)}
             aria-invalid={!!errors[key]}
             aria-describedby={errors[key] ? `${key}-error` : undefined}
@@ -76,7 +76,7 @@ export function ContactForm() {
             <p
               id={`${key}-error`}
               role="alert"
-              className="mt-2 text-sm text-danger"
+              className="mt-2 text-[15px] text-danger"
             >
               {errors[key]?.message}
             </p>
@@ -84,12 +84,13 @@ export function ContactForm() {
         </div>
       ))}
       <div>
-        <label htmlFor="message" className="mb-2 block text-sm font-medium">
-          What should we know?
+        <label htmlFor="message" className="block text-[15px]">
+          (05) What should we know?
         </label>
         <textarea
           id="message"
-          className="min-h-32 w-full rounded-md border bg-surface p-3 text-base transition-colors hover:border-foreground/30 aria-[invalid=true]:border-danger sm:text-sm"
+          rows={4}
+          className={`${field} resize-y`}
           {...register('message')}
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? 'message-error' : undefined}
@@ -98,17 +99,23 @@ export function ContactForm() {
           <p
             id="message-error"
             role="alert"
-            className="mt-2 text-sm text-danger"
+            className="mt-2 text-[15px] text-danger"
           >
             {errors.message.message}
           </p>
         )}
       </div>
-      <p className="text-xs leading-5 text-muted">
-        UI preview only. Submissions are validated in your browser and are not
-        sent or saved.
-      </p>
-      <Button type="submit">Preview submission</Button>
+      <div className="flex flex-wrap items-baseline justify-between gap-4">
+        <p className="meta max-w-xs text-muted">
+          UI preview only — validated in your browser, not sent or saved
+        </p>
+        <button
+          type="submit"
+          className="cursor-pointer font-serif text-3xl tracking-[-0.03em] underline decoration-1 underline-offset-[0.14em] transition-opacity hover:opacity-60"
+        >
+          Send it →
+        </button>
+      </div>
     </form>
   );
 }

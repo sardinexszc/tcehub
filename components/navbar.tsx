@@ -1,47 +1,73 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Search, ArrowUpRight } from 'lucide-react';
 import { navigation } from '@/lib/navigation';
 import { MobileNav } from '@/components/mobile-nav';
-import { Logo } from '@/components/logo';
-import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 export function Navbar() {
   const path = usePathname();
+  const isActive = (href: string) => path.startsWith(href);
   return (
-    <header className="sticky top-0 z-40 border-b border-foreground/[0.06] bg-background/85 backdrop-blur-md">
-      <div className="container-shell flex h-[72px] items-center justify-between gap-4">
-        <Logo />
-        <nav
-          aria-label="Main navigation"
-          className="hidden items-center gap-1.5 lg:flex"
+    <header className="sticky top-0 z-40 bg-background">
+      <div className="container-shell grid h-14 grid-cols-[1fr_auto] items-center gap-4 text-[15px] lg:grid-cols-[1fr_auto_1fr]">
+        <Link
+          href="/"
+          aria-label="TCEHub home"
+          className="justify-self-start transition-opacity hover:opacity-60"
         >
-          {navigation.map(([label, href]) => {
-            const active = path.startsWith(href);
-            return (
-              <Link
-                key={href}
-                href={href}
-                aria-current={active ? 'page' : undefined}
-                className={`flex h-10 items-center rounded-full border px-5 text-[13px] transition-colors duration-200 ${active ? 'border-foreground bg-foreground font-medium text-background' : 'bg-surface hover:border-foreground/40'}`}
-              >
-                {label}
-              </Link>
-            );
-          })}
+          TCEHub
+        </Link>
+        <nav aria-label="Main navigation" className="hidden lg:block">
+          <ul className="flex">
+            {navigation.map(([label, href], i) => (
+              <li key={href}>
+                <Link
+                  href={href}
+                  aria-current={isActive(href) ? 'page' : undefined}
+                  className="group inline-flex items-start transition-opacity hover:opacity-60"
+                >
+                  <sup className="mr-0.5 mt-1 text-[9px] leading-none">
+                    ({i + 1})
+                  </sup>
+                  <span
+                    className={cn(
+                      isActive(href) &&
+                        'underline decoration-1 underline-offset-[3px]',
+                    )}
+                  >
+                    {label}
+                  </span>
+                  {i < navigation.length - 1 && (
+                    <span aria-hidden="true" className="mr-1.5">
+                      ,
+                    </span>
+                  )}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </nav>
-        <div className="flex items-center gap-1.5">
-          <Button asChild variant="outline" size="icon" className="size-10">
-            <Link href="/shops#search" aria-label="Search shop directory">
-              <Search size={18} aria-hidden="true" />
+        <div className="flex items-center justify-self-end gap-1">
+          {(
+            [
+              ['About', '/about'],
+              ['Contact', '/contact'],
+            ] as const
+          ).map(([label, href], i) => (
+            <Link
+              key={href}
+              href={href}
+              aria-current={isActive(href) ? 'page' : undefined}
+              className={cn(
+                'hidden transition-opacity hover:opacity-60 lg:inline',
+                isActive(href) &&
+                  'underline decoration-1 underline-offset-[3px]',
+              )}
+            >
+              {label}
+              {i === 0 && <span aria-hidden="true">,</span>}
             </Link>
-          </Button>
-          <Button asChild size="sm" className="hidden md:inline-flex">
-            <Link href="/contact#submit-shop">
-              Submit a Shop
-              <ArrowUpRight size={15} aria-hidden="true" />
-            </Link>
-          </Button>
+          ))}
           <MobileNav />
         </div>
       </div>

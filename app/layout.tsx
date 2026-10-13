@@ -1,11 +1,18 @@
 import type { Metadata, Viewport } from 'next';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Archivo, Geist, Newsreader } from 'next/font/google';
 import { siteUrl } from '@/components/seo';
 import './globals.css';
 const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
-const geistMono = Geist_Mono({
+const serif = Newsreader({
   subsets: ['latin'],
-  variable: '--font-geist-mono',
+  variable: '--font-serif',
+  axes: ['opsz'],
+  style: ['normal', 'italic'],
+});
+const display = Archivo({
+  subsets: ['latin'],
+  variable: '--font-display',
+  axes: ['wdth'],
 });
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -17,7 +24,7 @@ export const metadata: Metadata = {
     'Discover Camry specialists, build journals, community events, and ownership guides.',
 };
 export const viewport: Viewport = {
-  themeColor: '#F4F4F0',
+  themeColor: '#FFFFFF',
   colorScheme: 'light',
 };
 export default function RootLayout({
@@ -27,10 +34,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${geist.variable} ${geistMono.variable}`}>
+      <body
+        className={`${geist.variable} ${serif.variable} ${display.variable}`}
+      >
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-md focus:bg-accent focus:p-3 focus:text-accent-foreground"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-foreground focus:p-3 focus:text-background"
         >
           Skip to content
         </a>

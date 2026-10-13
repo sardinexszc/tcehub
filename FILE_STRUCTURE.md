@@ -44,7 +44,10 @@
 - `components/content-lists.tsx`
 - `components/empty-state.tsx`
 - `components/event-card.tsx`
-- `components/filter-bar.tsx`
+- `components/split-page.tsx`
+- `components/stat-row.tsx`
+- `components/text-filter.tsx`
+- `components/page-index.tsx`
 - `components/footer.tsx`
 - `components/gallery-card.tsx`
 - `components/guide-card.tsx`
@@ -54,7 +57,6 @@
 - `components/map-placeholder.tsx`
 - `components/mobile-nav.tsx`
 - `components/navbar.tsx`
-- `components/pagination.tsx`
 - `components/section-heading.tsx`
 - `components/seo.ts`
 - `components/shop-card.tsx`
@@ -73,9 +75,7 @@
 - `package-lock.json`
 - `package.json`
 - `postcss.config.js`
-- `public/images/camry-garage.svg`
-- `public/images/camry-road.svg`
-- `public/images/camry-studio.svg`
+- `public/images/camry-*.webp` (licensed illustrations of the owner’s Camry © STXNCED)
 - `scripts/smoke.mjs`
 - `tailwind.config.ts`
 - `tsconfig.json`

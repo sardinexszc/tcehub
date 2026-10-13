@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ArticleContent, articleSections } from '@/components/article-content';
-import { Badge } from '@/components/ui/badge';
+import type { Tint } from '@/components/split-page';
 export function ArticlePage({
   title,
   cover,
@@ -10,6 +10,7 @@ export function ArticlePage({
   content,
   kind,
   toc = false,
+  tint = 'white',
   children,
 }: {
   title: string;
@@ -19,57 +20,56 @@ export function ArticlePage({
   content: string;
   kind: string;
   toc?: boolean;
+  tint?: Tint;
   children?: React.ReactNode;
 }) {
   return (
-    <div className="container-shell py-10">
-      <Breadcrumbs
-        items={[
-          { label: kind, href: `/${kind.toLowerCase()}` },
-          { label: title },
-        ]}
-      />
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-5 flex gap-2">
-          {tags.map((t) => (
-            <Badge key={t}>{t}</Badge>
-          ))}
-        </div>
-        <h1 className="page-title">{title}</h1>
-        <p className="my-6 text-sm text-muted">{meta}</p>
+    <article data-tint={tint} className="container-shell pt-6 md:pt-10">
+      <div className="grid gap-4 lg:grid-cols-2 lg:gap-5">
+        <Breadcrumbs
+          items={[
+            { label: kind, href: `/${kind.toLowerCase()}` },
+            { label: title },
+          ]}
+        />
+        <p className="meta lg:text-right">{tags.join(' — ')}</p>
       </div>
-      <div className="relative my-10 aspect-[16/7] overflow-hidden rounded-xl border">
+      <h1 className="mt-10 max-w-[14ch] font-serif text-[clamp(3rem,8vw,8.5rem)] leading-[0.92] tracking-[-0.045em] md:mt-16">
+        {title}
+      </h1>
+      <p className="mt-6 text-[15px]">({meta})</p>
+      <div className="relative mt-10 aspect-[4/3] overflow-hidden bg-subtle md:mt-14 md:aspect-[16/8]">
         <Image
           src={cover}
-          alt={`${title} illustrative placeholder`}
+          alt={`${title}, illustrative image`}
           fill
           priority
           sizes="100vw"
           className="object-cover"
         />
       </div>
-      <div
-        className={`mx-auto grid max-w-5xl gap-12 ${toc ? 'lg:grid-cols-[1fr_220px]' : 'max-w-3xl'}`}
-      >
-        <ArticleContent content={content} />
-        {toc && (
-          <aside className="order-first h-fit rounded-xl border bg-surface p-5 lg:sticky lg:top-28 lg:order-last">
-            <h2 className="meta mb-4">In this guide</h2>
-            <nav aria-label="Table of contents" className="grid gap-4">
-              {articleSections(content).map((s) => (
-                <a
-                  key={s.id}
-                  href={`#${s.id}`}
-                  className="text-sm text-muted transition-colors hover:text-foreground"
-                >
-                  {s.title}
-                </a>
+      <div className="mt-14 grid gap-12 md:mt-20 lg:grid-cols-2 lg:gap-5">
+        <aside className="lg:sticky lg:top-24 lg:h-fit">
+          <h2 className="eyebrow mb-4">{toc ? 'In this guide' : 'Contents'}</h2>
+          <nav aria-label="Table of contents">
+            <ol className="rule-list max-w-sm text-[15px]">
+              {articleSections(content).map((s, i) => (
+                <li key={s.id}>
+                  <a
+                    href={`#${s.id}`}
+                    className="flex justify-between gap-4 py-2 transition-opacity hover:opacity-60"
+                  >
+                    {s.title}
+                    <span className="tabular-nums">{i + 1}</span>
+                  </a>
+                </li>
               ))}
-            </nav>
-          </aside>
-        )}
+            </ol>
+          </nav>
+        </aside>
+        <ArticleContent content={content} />
       </div>
       {children}
-    </div>
+    </article>
   );
 }

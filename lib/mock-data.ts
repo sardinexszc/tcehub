@@ -87,10 +87,24 @@ export const categories: Category[] = [
 export const demoToday = '2026-10-13T00:00:00+08:00';
 // All names, ratings, venues, dates, and contact details below are fictional demo data.
 // TODO: replace with Supabase query behind a server-only content repository.
+// Illustrations of the owner’s Camry © STXNCED, purchased and licensed for TCEHub; keep the credit.
+export const imageCredit = 'Illustrations © STXNCED';
+export const cutouts = [
+  '/images/camry-cutout-1.webp',
+  '/images/camry-cutout-2.webp',
+  '/images/camry-cutout-3.webp',
+  '/images/camry-cutout-4.webp',
+];
+export const wallpapers = [
+  '/images/camry-wallpaper-1.webp',
+  '/images/camry-wallpaper-2.webp',
+  '/images/camry-wallpaper-3.webp',
+];
 const photos = [
-  '/images/camry-studio.svg',
-  '/images/camry-road.svg',
-  '/images/camry-garage.svg',
+  '/images/camry-poster-club.webp',
+  '/images/camry-detail-side.webp',
+  '/images/camry-poster-script.webp',
+  '/images/camry-detail-front.webp',
 ];
 const shopNames = [
   'Apex Toyota Specialists',
@@ -148,7 +162,11 @@ export const shops: Shop[] = shopNames.map((name, i) => ({
   phone: '+63 000 000 0000',
   email: 'demo@example.com',
   hours: 'Monday–Saturday, 8:00 AM–5:00 PM',
-  images: [photos[i % 3], photos[(i + 1) % 3], photos[(i + 2) % 3]],
+  images: [
+    photos[i % photos.length],
+    photos[(i + 1) % photos.length],
+    photos[(i + 2) % photos.length],
+  ],
   rating: 4.5 + (i % 5) / 10,
   featured: i < 3,
 }));
@@ -166,7 +184,7 @@ export const journals: Journal[] = journalTitles.map((title, i) => ({
   title,
   excerpt:
     'The decisions, lessons, and little details behind a Camry built to be driven.',
-  coverImage: photos[i % 3],
+  coverImage: photos[i % photos.length],
   author: ['Marco Reyes', 'TCEHub Editorial', 'Bea Santos'][i % 3],
   date: `2026-09-${String(26 - i * 3).padStart(2, '0')}T09:00:00+08:00`,
   tags: [generations[i + 1], i % 2 ? 'OEM-plus' : 'Daily driver'],
@@ -209,7 +227,7 @@ export const events: Event[] = eventTitles.map((title, i) => ({
     'Demo Park, Alabang',
     'Sample Lakeside, Laguna',
   ][i % 3],
-  coverImage: photos[i % 3],
+  coverImage: photos[i % photos.length],
   type: (['meet', 'show', 'cruise', 'track'] as const)[i % 4],
 }));
 export const galleries: Gallery[] = [
@@ -223,8 +241,8 @@ export const galleries: Gallery[] = [
   id: `gallery-${i}`,
   slug: `album-${i + 1}`,
   title,
-  coverImage: photos[i % 3],
-  images: [...photos, ...photos],
+  coverImage: photos[i % photos.length],
+  images: [...photos.slice(i % 2), ...wallpapers, ...photos.slice(0, i % 2)],
   date: `2026-09-${String(24 - i * 2).padStart(2, '0')}T09:00:00+08:00`,
   tags: ['Community', generations[i]],
 }));
@@ -242,7 +260,7 @@ export const guides: Guide[] = guideTitles.map((title, i) => ({
   title,
   excerpt:
     'A clear starting point for informed ownership, from first inspection to everyday upkeep.',
-  coverImage: photos[i % 3],
+  coverImage: photos[i % photos.length],
   generation: ['XV50', 'XV30', 'XV70', 'XV40', 'XV80', 'XV20'][i],
   category: i % 2 ? 'Maintenance' : 'Buying advice',
   content: `## Before you begin

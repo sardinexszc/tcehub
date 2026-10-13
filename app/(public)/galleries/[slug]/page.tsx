@@ -1,9 +1,10 @@
 import { notFound } from 'next/navigation';
-import { galleries } from '@/lib/mock-data';
+import { galleries, imageCredit } from '@/lib/mock-data';
 import { formatDate } from '@/lib/utils';
 import { SEO } from '@/components/seo';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ImageGallery } from '@/components/image-gallery';
+import { StatRow } from '@/components/stat-row';
 export function generateStaticParams() {
   return galleries.map(({ slug }) => ({ slug }));
 }
@@ -27,14 +28,23 @@ export default async function Page({
   const g = galleries.find((g) => g.slug === slug);
   if (!g) notFound();
   return (
-    <div className="container-shell py-10">
+    <div data-tint="stone" className="container-shell pt-6 md:pt-10">
       <Breadcrumbs
         items={[{ label: 'Galleries', href: '/galleries' }, { label: g.title }]}
       />
-      <h1 className="page-title">{g.title}</h1>
-      <p className="mb-10 mt-5 text-muted">
-        {formatDate(g.date)} · {g.images.length} images · {g.tags.join(' / ')}
-      </p>
+      <h1 className="mt-10 max-w-[12ch] font-serif text-[clamp(3rem,8vw,8.5rem)] leading-[0.92] tracking-[-0.045em] md:mt-16">
+        {g.title}
+      </h1>
+      <div className="mb-12 mt-10 md:mt-14">
+        <StatRow
+          items={[
+            ['Date', formatDate(g.date)],
+            ['Images', String(g.images.length)],
+            ['Tags', g.tags.join(', ')],
+            ['Credit', imageCredit],
+          ]}
+        />
+      </div>
       <ImageGallery images={g.images} title={g.title} masonry />
     </div>
   );

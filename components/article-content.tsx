@@ -9,13 +9,16 @@ export function articleSections(content: string) {
 }
 export function ArticleContent({ content }: { content: string }) {
   return (
-    <div className="space-y-10">
-      {articleSections(content).map((s) => (
-        <section key={s.id} id={s.id} className="scroll-mt-28">
-          <h2 className="mb-4 text-2xl font-medium tracking-[-0.02em]">
+    <div className="grid gap-14">
+      {articleSections(content).map((s, i) => (
+        <section key={s.id} id={s.id} className="scroll-mt-24">
+          <h2 className="mb-5 flex items-baseline gap-4 text-3xl font-normal tracking-[-0.035em] md:text-4xl">
+            <span className="text-[15px] tracking-normal">
+              ({String(i + 1).padStart(2, '0')})
+            </span>
             {s.title}
           </h2>
-          <p className="whitespace-pre-line text-base leading-8 text-muted">
+          <p className="max-w-[34em] whitespace-pre-line font-serif text-[21px] leading-[1.45] tracking-[-0.01em]">
             {s.body}
           </p>
         </section>

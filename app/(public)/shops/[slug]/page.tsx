@@ -3,11 +3,10 @@ import { shops } from '@/lib/mock-data';
 import { SEO } from '@/components/seo';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ImageGallery } from '@/components/image-gallery';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { MapPlaceholder } from '@/components/map-placeholder';
 import { ShopCard } from '@/components/shop-card';
 import { SectionHeading } from '@/components/section-heading';
+import { StatRow } from '@/components/stat-row';
 export function generateStaticParams() {
   return shops.map(({ slug }) => ({ slug }));
 }
@@ -30,82 +29,85 @@ export default async function ShopDetail({
   const { slug } = await params;
   const shop = shops.find((s) => s.slug === slug);
   if (!shop) notFound();
+  const related = shops
+    .filter(
+      (s) =>
+        s.id !== shop.id && s.category.some((c) => shop.category.includes(c)),
+    )
+    .slice(0, 3);
   return (
-    <div className="container-shell py-10">
+    <div data-tint="cream" className="container-shell pt-6 md:pt-10">
       <Breadcrumbs
         items={[{ label: 'Shops', href: '/shops' }, { label: shop.name }]}
       />
-      <div className="mb-8">
-        <div className="mb-4 flex flex-wrap gap-2">
-          {shop.category.map((c) => (
-            <Badge key={c}>{c}</Badge>
-          ))}
-        </div>
-        <h1 className="page-title">{shop.name}</h1>
-        <p className="mt-4 text-muted">
-          {shop.city} · {shop.region} · ★ {shop.rating?.toFixed(1)} demo rating
-        </p>
+      <h1 className="mt-10 max-w-[12ch] font-serif text-[clamp(3rem,8vw,8.5rem)] leading-[0.92] tracking-[-0.045em] md:mt-16">
+        {shop.name}
+      </h1>
+      <div className="mt-10 md:mt-14">
+        <StatRow
+          items={[
+            ['Location', `${shop.city} — ${shop.region}`],
+            ['Services', shop.category.join(', ')],
+            ['Generations', shop.generations.join(', ')],
+            ['Rating', `${shop.rating?.toFixed(1)} (demo)`],
+          ]}
+        />
       </div>
-      <ImageGallery title={shop.name} images={shop.images} />
-      <div className="grid gap-10 py-10 md:grid-cols-[2fr_1fr]">
-        <div>
-          <h2 className="mb-4 text-2xl font-medium tracking-[-0.02em]">
-            About the shop
-          </h2>
-          <p className="leading-8 text-muted">{shop.description}</p>
-          <h2 className="meta mb-3 mt-10">Camry generations</h2>
-          <div className="flex flex-wrap gap-2">
-            {shop.generations.map((g) => (
-              <Badge key={g}>{g}</Badge>
+      <div className="mt-12">
+        <ImageGallery title={shop.name} images={shop.images} />
+      </div>
+      <div className="mt-12 grid gap-12 lg:grid-cols-2 lg:gap-5">
+        <aside className="lg:sticky lg:top-24 lg:h-fit">
+          <h2 className="eyebrow mb-4">Plan your visit</h2>
+          <dl className="rule-list max-w-sm text-[15px]">
+            {[
+              ['Hours', shop.hours],
+              ['Phone', shop.phone],
+              ['Email', shop.email],
+              ['Address', shop.address],
+            ].map(([k, v]) => (
+              <div key={k} className="grid grid-cols-[6rem_1fr] gap-4 py-2">
+                <dt className="text-muted">{k}</dt>
+                <dd className="break-words">{v}</dd>
+              </div>
             ))}
-          </div>
-          <h2 className="meta mb-3 mt-10">Find the shop</h2>
-          <p className="mb-4 text-muted">{shop.address}</p>
+          </dl>
+          <p className="meta mt-4 text-muted">
+            Contact details are demo placeholders
+          </p>
+          {shop.website && (
+            <a
+              href={shop.website}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="link-u mt-4 inline-block"
+            >
+              Visit website →
+            </a>
+          )}
+        </aside>
+        <div className="grid gap-10">
+          <p className="max-w-[22em] font-serif text-3xl leading-[1.15] tracking-[-0.025em] md:text-4xl">
+            {shop.description}
+          </p>
           <MapPlaceholder label="Shop map coming soon" />
         </div>
-        <aside className="h-fit rounded-xl border bg-surface p-6 md:sticky md:top-24">
-          <h2 className="text-lg font-medium tracking-[-0.02em]">
-            Plan your visit
-          </h2>
-          <p className="meta mt-6">Opening hours</p>
-          <p className="mt-2 text-sm">{shop.hours}</p>
-          <p className="meta mt-6">Demo contact</p>
-          <p className="mt-2 text-sm">{shop.phone}</p>
-          <p className="mt-2 break-all text-sm">{shop.email}</p>
-          <div className="mt-6 grid gap-3">
-            <Button disabled>Call shop · demo</Button>
-            <Button variant="outline" disabled>
-              Email shop · demo
-            </Button>
-            {shop.website && (
-              <Button asChild variant="outline">
-                <a
-                  href={shop.website}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  Visit website
-                </a>
-              </Button>
-            )}
-          </div>
-        </aside>
       </div>
-      <section className="section-space border-t">
-        <SectionHeading title="More specialists to explore" />
-        <div className="content-grid">
-          {shops
-            .filter(
-              (s) =>
-                s.id !== shop.id &&
-                s.category.some((c) => shop.category.includes(c)),
-            )
-            .slice(0, 3)
-            .map((s) => (
-              <ShopCard key={s.id} shop={s} />
+      {related.length > 0 && (
+        <section className="section-space">
+          <SectionHeading
+            kicker="Similar services"
+            title="More specialists"
+            href="/shops"
+            linkLabel="Back to the directory"
+          />
+          <div className="content-grid">
+            {related.map((s, i) => (
+              <ShopCard key={s.id} shop={s} index={i} />
             ))}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

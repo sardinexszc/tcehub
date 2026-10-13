@@ -21,25 +21,29 @@ export function ImageGallery({
       <div
         className={
           masonry
-            ? 'columns-1 gap-4 sm:columns-2 lg:columns-3'
-            : 'grid grid-cols-1 gap-4 sm:grid-cols-3'
+            ? 'columns-1 gap-5 sm:columns-2 lg:columns-3'
+            : 'grid grid-cols-1 gap-5 sm:grid-cols-3'
         }
       >
         {images.map((src, i) => (
-          <button
-            key={`${src}-${i}`}
-            aria-label={`Open ${title} image ${i + 1}`}
-            onClick={() => setIndex(i)}
-            className={`group relative mb-4 block w-full cursor-zoom-in overflow-hidden rounded-xl bg-subtle ${masonry && i % 2 ? 'aspect-[4/5]' : 'aspect-[4/3]'}`}
-          >
-            <Image
-              src={src}
-              alt={`${title}, illustrative image ${i + 1}`}
-              fill
-              sizes="(max-width:640px) 100vw,33vw"
-              className="media-mono object-cover group-hover:scale-[1.03]"
-            />
-          </button>
+          <figure key={`${src}-${i}`} className="mb-8 break-inside-avoid">
+            <button
+              aria-label={`Open ${title} image ${i + 1}`}
+              onClick={() => setIndex(i)}
+              className={`group relative block w-full cursor-zoom-in overflow-hidden bg-subtle ${src.includes('wallpaper') ? 'aspect-[9/16]' : masonry && i % 3 === 1 ? 'aspect-[4/5]' : 'aspect-square'}`}
+            >
+              <Image
+                src={src}
+                alt={`${title}, illustrative image ${i + 1}`}
+                fill
+                sizes="(max-width:640px) 100vw,33vw"
+                className="media-mono object-cover group-hover:scale-[1.03]"
+              />
+            </button>
+            <figcaption className="mt-2 text-[15px]">
+              ({String(i + 1).padStart(2, '0')})
+            </figcaption>
+          </figure>
         ))}
       </div>
       <Lightbox

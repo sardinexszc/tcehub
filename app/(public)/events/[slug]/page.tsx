@@ -1,12 +1,11 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import { events } from '@/lib/mock-data';
+import { events, cutouts } from '@/lib/mock-data';
 import { formatDate } from '@/lib/utils';
 import { SEO } from '@/components/seo';
 import { Breadcrumbs } from '@/components/breadcrumbs';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { MapPlaceholder } from '@/components/map-placeholder';
+import { StatRow } from '@/components/stat-row';
 export function generateStaticParams() {
   return events.map(({ slug }) => ({ slug }));
 }
@@ -30,51 +29,50 @@ export default async function Page({
   const e = events.find((e) => e.slug === slug);
   if (!e) notFound();
   return (
-    <div className="container-shell py-10">
+    <div data-tint="blush" className="container-shell pt-6 md:pt-10">
       <Breadcrumbs
         items={[{ label: 'Events', href: '/events' }, { label: e.title }]}
       />
-      <Badge className="mb-5">{e.type}</Badge>
-      <h1 className="page-title">{e.title}</h1>
-      <div className="relative my-10 aspect-[16/7] overflow-hidden rounded-xl">
-        <Image
-          src={e.coverImage}
-          alt={`${e.title} illustrative placeholder`}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
-      <div className="grid gap-10 md:grid-cols-[2fr_1fr]">
-        <div>
-          <h2 className="mb-4 text-2xl font-medium tracking-[-0.02em]">
-            About the gathering
-          </h2>
-          <p className="mb-8 leading-8 text-muted">{e.description}</p>
-          <MapPlaceholder label="Event location map coming soon" />
+      <div className="relative">
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute inset-x-0 -top-6 bottom-0 md:left-[30%]"
+        >
+          <Image
+            src={cutouts[events.indexOf(e) % cutouts.length]}
+            alt=""
+            fill
+            priority
+            sizes="70vw"
+            className="object-contain opacity-50 grayscale"
+          />
         </div>
-        <aside className="h-fit rounded-xl border bg-surface p-6 md:sticky md:top-24">
-          <h2 className="text-lg font-medium tracking-[-0.02em]">
-            Event details
-          </h2>
-          <dl className="mt-6 space-y-5 text-sm">
-            <div>
-              <dt className="text-muted">Date & time</dt>
-              <dd className="mt-2">{formatDate(e.date)} · 7:00 AM PHT</dd>
-            </div>
-            <div>
-              <dt className="text-muted">Location</dt>
-              <dd className="mt-2">{e.location}</dd>
-            </div>
-          </dl>
-          <Button disabled className="mt-8 w-full">
-            Add to Calendar · coming soon
-          </Button>
-          <p className="mt-3 text-xs text-muted">
-            Fictional event for interface preview.
+        <h1 className="relative mt-10 max-w-[10ch] py-10 font-serif text-[clamp(3rem,9vw,9.5rem)] leading-[0.9] tracking-[-0.045em] md:mt-16 md:py-20">
+          <span className="block font-sans text-[15px] tracking-normal">
+            (Community {e.type})
+          </span>
+          {e.title}
+        </h1>
+      </div>
+      <StatRow
+        items={[
+          ['Date', formatDate(e.date)],
+          ['Time', '7:00 AM PHT'],
+          ['Venue', e.location],
+          ['Registration', 'Coming soon'],
+        ]}
+      />
+      <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-5">
+        <h2 className="eyebrow">About the gathering</h2>
+        <div className="grid gap-10">
+          <p className="max-w-[22em] font-serif text-3xl leading-[1.15] tracking-[-0.025em] md:text-4xl">
+            {e.description}
           </p>
-        </aside>
+          <MapPlaceholder label="Event location map coming soon" />
+          <p className="meta text-muted">
+            Fictional event for interface preview · add to calendar coming soon
+          </p>
+        </div>
       </div>
     </div>
   );

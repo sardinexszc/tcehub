@@ -3,34 +3,42 @@
 @tailwind utilities;
 @layer base {
   :root {
-    /* Paper, ink, and a single lime signal. Lime is a fill only — never text on light. */
-    --background: 60 12% 95%;
-    --foreground: 80 6% 7%;
+    /* Monochrome editorial system. Each page may tint the paper via data-tint. */
+    --page: 0 0% 100%;
+    --foreground: 0 0% 0%;
     --surface: 0 0% 100%;
-    --subtle: 60 10% 91%;
-    --muted: 84 4% 35%;
-    --border: 60 8% 85%;
-    --accent: 71 90% 60%;
-    --accent-strong: 72 78% 52%;
-    --accent-foreground: 80 6% 7%;
+    --subtle: 0 0% 96%;
+    --muted: 0 0% 34%;
+    --border: 0 0% 0%;
     --danger: 4 77% 40%;
+  }
+  body:has([data-tint='cream']) {
+    --page: 44 36% 92%;
+    --surface: 44 40% 96%;
+    --subtle: 44 24% 87%;
+  }
+  body:has([data-tint='blush']) {
+    --page: 22 45% 92%;
+    --surface: 22 50% 96%;
+    --subtle: 22 30% 87%;
+  }
+  body:has([data-tint='stone']) {
+    --page: 60 6% 91%;
+    --surface: 60 8% 96%;
+    --subtle: 60 4% 86%;
   }
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background font-sans text-foreground antialiased;
-  }
-  h1,
-  h2,
-  h3 {
-    text-wrap: balance;
+    @apply bg-background font-sans text-[17px] leading-[1.25] text-foreground antialiased;
+    transition: background-color 0.4s ease;
   }
   :focus-visible {
-    @apply outline-none ring-2 ring-foreground ring-offset-2 ring-offset-background;
+    @apply outline-none ring-1 ring-foreground ring-offset-4 ring-offset-background;
   }
   ::selection {
-    @apply bg-accent text-accent-foreground;
+    @apply bg-foreground text-background;
   }
   html {
     scroll-behavior: smooth;
@@ -47,38 +55,51 @@
     }
   }
 }
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+}
 @layer components {
   .container-shell {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-5 md:px-8;
+    @apply w-full px-4 md:px-5;
   }
-  /* Small monospaced label with a lime square marker, after the reference's spec labels. */
+  /* Parenthetical label, Watson-style: (Recently), (Contact). */
   .eyebrow {
-    @apply inline-flex items-center gap-2.5 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted;
+    @apply text-[15px] tracking-[-0.01em];
   }
   .eyebrow::before {
-    content: '';
-    @apply size-2 shrink-0 rounded-[2px] bg-accent ring-1 ring-foreground/15;
+    content: '(';
+  }
+  .eyebrow::after {
+    content: ')';
   }
   .meta {
-    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-muted;
+    @apply text-[11px] uppercase leading-[1.2] tracking-[0.02em];
   }
   .page-title {
-    @apply text-4xl font-medium leading-[1.04] tracking-[-0.035em] md:text-6xl;
+    @apply font-serif text-5xl leading-[0.95] tracking-[-0.03em] md:text-7xl;
+  }
+  .wordmark {
+    @apply font-display font-semibold uppercase leading-[0.8] tracking-[-0.02em];
+    font-stretch: 68%;
+  }
+  .link-u {
+    @apply underline decoration-1 underline-offset-[0.14em] transition-opacity hover:opacity-60;
   }
   .section-space {
-    @apply py-14 md:py-24;
+    @apply py-16 md:py-28;
   }
   .content-grid {
-    @apply grid gap-5 sm:grid-cols-2 lg:grid-cols-3;
+    @apply grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-3;
   }
-  /* Hairline cell grid: the gap shows the border colour through. */
-  .hairline-grid {
-    @apply grid gap-px overflow-hidden rounded-xl border bg-border;
+  .rule-list > * {
+    @apply border-b border-foreground;
   }
-  .hairline-grid > * {
-    @apply bg-surface;
+  .rule-list > *:first-child {
+    @apply border-t;
   }
   .media-mono {
-    @apply grayscale transition-[filter,transform] duration-700 ease-out group-hover:grayscale-0;
+    @apply transition-[transform,filter] duration-700 ease-out;
   }
 }
