@@ -1,4 +1,5 @@
 import { SEO } from '@/components/seo';
+import { PageHeader } from '@/components/page-header';
 import { JournalList } from '@/components/content-lists';
 export const metadata = SEO(
   'Journals',
@@ -7,12 +8,12 @@ export const metadata = SEO(
 );
 export default function Page() {
   return (
-    <div className="container-shell py-12">
-      <p className="eyebrow mb-4">Behind the build</p>
-      <h1 className="page-title">Built to be driven.</h1>
-      <p className="mb-10 mt-5 max-w-xl leading-7 text-muted">
-        Stories, decisions, and lessons from the people behind the wheel.
-      </p>
+    <div className="container-shell pb-12 pt-10 md:pt-14">
+      <PageHeader
+        kicker="Behind the build"
+        title="Built to be driven."
+        description="Stories, decisions, and lessons from the people behind the wheel."
+      />
       <JournalList />
     </div>
   );

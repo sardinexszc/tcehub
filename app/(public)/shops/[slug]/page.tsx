@@ -49,27 +49,27 @@ export default async function ShopDetail({
       <ImageGallery title={shop.name} images={shop.images} />
       <div className="grid gap-10 py-10 md:grid-cols-[2fr_1fr]">
         <div>
-          <h2 className="mb-4 text-2xl font-semibold">About the shop</h2>
+          <h2 className="mb-4 text-2xl font-medium tracking-[-0.02em]">
+            About the shop
+          </h2>
           <p className="leading-8 text-muted">{shop.description}</p>
-          <h2 className="mb-3 mt-8 font-semibold">Camry generations</h2>
+          <h2 className="meta mb-3 mt-10">Camry generations</h2>
           <div className="flex flex-wrap gap-2">
             {shop.generations.map((g) => (
               <Badge key={g}>{g}</Badge>
             ))}
           </div>
-          <h2 className="mb-3 mt-8 font-semibold">Find the shop</h2>
+          <h2 className="meta mb-3 mt-10">Find the shop</h2>
           <p className="mb-4 text-muted">{shop.address}</p>
           <MapPlaceholder label="Shop map coming soon" />
         </div>
-        <aside className="h-fit rounded-xl border bg-surface p-6">
-          <h2 className="text-lg font-semibold">Plan your visit</h2>
-          <p className="mt-5 text-xs uppercase tracking-wider text-muted">
-            Opening hours
-          </p>
+        <aside className="h-fit rounded-xl border bg-surface p-6 md:sticky md:top-24">
+          <h2 className="text-lg font-medium tracking-[-0.02em]">
+            Plan your visit
+          </h2>
+          <p className="meta mt-6">Opening hours</p>
           <p className="mt-2 text-sm">{shop.hours}</p>
-          <p className="mt-5 text-xs uppercase tracking-wider text-muted">
-            Demo contact
-          </p>
+          <p className="meta mt-6">Demo contact</p>
           <p className="mt-2 text-sm">{shop.phone}</p>
           <p className="mt-2 break-all text-sm">{shop.email}</p>
           <div className="mt-6 grid gap-3">

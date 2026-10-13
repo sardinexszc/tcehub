@@ -12,20 +12,24 @@ export function SectionHeading({
   linkLabel?: string;
 }) {
   return (
-    <div className="mb-7 flex flex-wrap items-end justify-between gap-4">
+    <div className="mb-8 flex flex-wrap items-end justify-between gap-4 md:mb-10">
       <div>
-        {kicker && <p className="eyebrow mb-3">{kicker}</p>}
-        <h2 className="text-2xl font-semibold tracking-tight md:text-3xl">
+        {kicker && <p className="eyebrow mb-4">{kicker}</p>}
+        <h2 className="text-3xl font-medium tracking-[-0.03em] md:text-4xl">
           {title}
         </h2>
       </div>
       {href && (
         <Link
-          className="flex items-center gap-2 text-sm text-muted hover:text-foreground"
+          className="group flex items-center gap-2 rounded-md border bg-surface px-3.5 py-2 text-[13px] transition-colors hover:border-foreground/40"
           href={href}
         >
           {linkLabel}
-          <ArrowUpRight size={16} />
+          <ArrowUpRight
+            size={15}
+            aria-hidden="true"
+            className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
+          />
         </Link>
       )}
     </div>

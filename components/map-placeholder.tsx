@@ -12,13 +12,15 @@ export function MapPlaceholder({
       style={{
         backgroundImage:
           'linear-gradient(hsl(var(--border)) 1px, transparent 1px),linear-gradient(90deg,hsl(var(--border)) 1px,transparent 1px)',
-        backgroundSize: '36px 36px',
+        backgroundSize: '32px 32px',
       }}
     >
-      <div className="rounded-full border bg-background p-4">
-        <MapPin size={25} />
+      <div className="rounded-md bg-accent p-3 text-accent-foreground">
+        <MapPin size={22} aria-hidden="true" />
       </div>
-      <p className="rounded bg-surface px-3 py-1 text-sm">{label}</p>
+      <p className="rounded bg-surface px-3 py-1 text-sm font-medium text-foreground">
+        {label}
+      </p>
       <p className="rounded bg-surface px-3 text-xs">
         An interactive map is on the way.
       </p>

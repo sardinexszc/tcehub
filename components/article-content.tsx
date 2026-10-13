@@ -12,7 +12,9 @@ export function ArticleContent({ content }: { content: string }) {
     <div className="space-y-10">
       {articleSections(content).map((s) => (
         <section key={s.id} id={s.id} className="scroll-mt-28">
-          <h2 className="mb-4 text-2xl font-semibold">{s.title}</h2>
+          <h2 className="mb-4 text-2xl font-medium tracking-[-0.02em]">
+            {s.title}
+          </h2>
           <p className="whitespace-pre-line text-base leading-8 text-muted">
             {s.body}
           </p>

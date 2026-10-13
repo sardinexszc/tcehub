@@ -54,15 +54,13 @@ export function ArticlePage({
         <ArticleContent content={content} />
         {toc && (
           <aside className="order-first h-fit rounded-xl border bg-surface p-5 lg:sticky lg:top-28 lg:order-last">
-            <h2 className="mb-4 text-xs font-semibold uppercase tracking-wider">
-              In this guide
-            </h2>
+            <h2 className="meta mb-4">In this guide</h2>
             <nav aria-label="Table of contents" className="grid gap-4">
               {articleSections(content).map((s) => (
                 <a
                   key={s.id}
                   href={`#${s.id}`}
-                  className="text-sm text-muted hover:text-accent"
+                  className="text-sm text-muted transition-colors hover:text-foreground"
                 >
                   {s.title}
                 </a>

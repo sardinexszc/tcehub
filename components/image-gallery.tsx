@@ -30,14 +30,14 @@ export function ImageGallery({
             key={`${src}-${i}`}
             aria-label={`Open ${title} image ${i + 1}`}
             onClick={() => setIndex(i)}
-            className={`relative mb-4 block w-full overflow-hidden rounded-xl border ${masonry && i % 2 ? 'aspect-[4/5]' : 'aspect-[4/3]'}`}
+            className={`group relative mb-4 block w-full cursor-zoom-in overflow-hidden rounded-xl bg-subtle ${masonry && i % 2 ? 'aspect-[4/5]' : 'aspect-[4/3]'}`}
           >
             <Image
               src={src}
               alt={`${title}, illustrative image ${i + 1}`}
               fill
               sizes="(max-width:640px) 100vw,33vw"
-              className="object-cover transition-transform hover:scale-105"
+              className="media-mono object-cover group-hover:scale-[1.03]"
             />
           </button>
         ))}

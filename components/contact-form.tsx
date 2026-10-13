@@ -23,7 +23,9 @@ export function ContactForm() {
   } = useForm<Values>({ resolver: zodResolver(schema) });
   return done ? (
     <div role="status" className="rounded-xl border bg-surface p-8">
-      <h2 className="text-2xl font-semibold">Your form looks good.</h2>
+      <h2 className="text-2xl font-medium tracking-[-0.02em]">
+        Your form looks good.
+      </h2>
       <p className="mt-3 leading-7 text-muted">
         This preview validated the form locally. Nothing was sent or saved.
       </p>
@@ -57,7 +59,7 @@ export function ContactForm() {
         ] as const
       ).map(([key, label]) => (
         <div key={key}>
-          <label htmlFor={key} className="mb-2 block text-sm">
+          <label htmlFor={key} className="mb-2 block text-sm font-medium">
             {label}
           </label>
           <Input
@@ -71,25 +73,33 @@ export function ContactForm() {
             aria-describedby={errors[key] ? `${key}-error` : undefined}
           />
           {errors[key] && (
-            <p id={`${key}-error`} className="mt-2 text-sm text-accent">
+            <p
+              id={`${key}-error`}
+              role="alert"
+              className="mt-2 text-sm text-danger"
+            >
               {errors[key]?.message}
             </p>
           )}
         </div>
       ))}
       <div>
-        <label htmlFor="message" className="mb-2 block text-sm">
+        <label htmlFor="message" className="mb-2 block text-sm font-medium">
           What should we know?
         </label>
         <textarea
           id="message"
-          className="min-h-32 w-full rounded-lg border bg-background p-3 text-sm"
+          className="min-h-32 w-full rounded-md border bg-surface p-3 text-base transition-colors hover:border-foreground/30 aria-[invalid=true]:border-danger sm:text-sm"
           {...register('message')}
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? 'message-error' : undefined}
         />
         {errors.message && (
-          <p id="message-error" className="mt-2 text-sm text-accent">
+          <p
+            id="message-error"
+            role="alert"
+            className="mt-2 text-sm text-danger"
+          >
             {errors.message.message}
           </p>
         )}

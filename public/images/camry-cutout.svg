@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 460" fill="none">
+  <defs>
+    <linearGradient id="paint" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9e6df"/>
+      <stop offset=".45" stop-color="#cfcac0"/>
+      <stop offset="1" stop-color="#8f8a80"/>
+    </linearGradient>
+    <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a3f46"/>
+      <stop offset="1" stop-color="#15181c"/>
+    </linearGradient>
+    <linearGradient id="sheen" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#fff" stop-opacity="0"/>
+      <stop offset=".5" stop-color="#fff" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#fff" stop-opacity="0"/>
+    </linearGradient>
+    <radialGradient id="rim">
+      <stop offset="0" stop-color="#d7d9dc"/>
+      <stop offset=".7" stop-color="#9ca1a7"/>
+      <stop offset="1" stop-color="#5d6268"/>
+    </radialGradient>
+    <radialGradient id="shadow">
+      <stop offset="0" stop-color="#000" stop-opacity=".35"/>
+      <stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+    <mask id="arches">
+      <rect width="1200" height="460" fill="#fff"/>
+      <circle cx="292" cy="352" r="74" fill="#000"/>
+      <circle cx="918" cy="352" r="74" fill="#000"/>
+    </mask>
+    <g id="wheel">
+      <circle r="66" fill="#121417"/>
+      <circle r="62" fill="none" stroke="#2b2f34" stroke-width="3"/>
+      <circle r="44" fill="url(#rim)"/>
+      <g stroke="#6b7076" stroke-width="7" stroke-linecap="round">
+        <path d="M0-40V-12M0 12V40M-40 0H-12M12 0H40M-28-28-9-9M9 9 28 28M28-28 9-9M-9 9-28 28"/>
+      </g>
+      <circle r="11" fill="#3b3f44"/>
+      <circle r="4" fill="#c9ccd0"/>
+    </g>
+  </defs>
+  <ellipse cx="605" cy="418" rx="520" ry="26" fill="url(#shadow)"/>
+  <clipPath id="wells"><rect width="1200" height="372"/></clipPath>
+  <g clip-path="url(#wells)" fill="#23252a"><circle cx="292" cy="352" r="74"/><circle cx="918" cy="352" r="74"/></g>
+  <g mask="url(#arches)">
+    <path fill="url(#paint)" d="M96 330c-4-26 6-46 34-54l158-26c70-52 150-92 248-102 92-8 196-6 262 14 52 16 98 46 148 86l112 16c46 8 72 28 78 58l4 30c2 18-8 30-26 32l-18 2H122c-16 0-26-10-26-26Z"/>
+    <path fill="#76716a" opacity=".55" d="M150 364h920v14c0 8-6 12-14 12H164c-8 0-14-4-14-12Z"/>
+  </g>
+  <path fill="url(#glass)" d="M332 248c58-40 122-72 206-80 82-6 168-4 222 10 40 10 80 34 120 70Z"/>
+  <path stroke="url(#paint)" stroke-width="12" d="M612 168v82"/>
+  <path stroke="#e9e6df" stroke-width="5" opacity=".7" d="M346 244c56-38 118-66 196-72"/>
+  <path fill="url(#sheen)" opacity=".8" d="M250 262h730l40 8H210Z"/>
+  <path stroke="#7d786f" stroke-width="2" opacity=".7" d="M402 258v104M612 252v108M836 260l-6 100"/>
+  <rect x="520" y="282" width="44" height="7" rx="3.5" fill="#7d786f"/>
+  <rect x="738" y="282" width="44" height="7" rx="3.5" fill="#7d786f"/>
+  <path fill="#1b1d20" d="M1052 286c18 2 34 10 40 22l-48 2c-10 0-14-14 8-24Z"/>
+  <path fill="#f4f4f2" d="M1060 292c12 2 22 7 26 14l-30 1c-6 0-6-12 4-15Z"/>
+  <path fill="#7a1d1d" d="M100 296c10-12 30-18 54-18l-6 22c-18 0-36 2-48 6Z"/>
+  <path fill="#2a2c2f" d="M1110 340h-36c-6 0-10 4-10 10v6h50Z"/>
+  <use href="#wheel" x="292" y="352"/>
+  <use href="#wheel" x="918" y="352"/>
+</svg>

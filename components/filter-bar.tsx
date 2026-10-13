@@ -53,10 +53,14 @@ export function FilterBar({
   regions: string[];
 }) {
   return (
-    <div className="mb-8 rounded-xl border bg-surface p-4">
+    <div className="mb-8 rounded-xl border bg-surface p-3 md:p-4">
       <div className="grid gap-3 md:grid-cols-[2fr_1fr_1fr]">
         <div className="relative">
-          <Search className="absolute left-3 top-3.5 text-muted" size={17} />
+          <Search
+            className="pointer-events-none absolute left-3 top-3.5 text-muted"
+            size={17}
+            aria-hidden="true"
+          />
           <Input
             id="search"
             className="pl-10 scroll-mt-28"
@@ -79,8 +83,12 @@ export function FilterBar({
           onChange={(region) => onChange({ ...filters, region })}
         />
       </div>
-      <div className="mt-4 flex flex-wrap items-center gap-2">
-        <SlidersHorizontal className="mr-2 text-muted" size={15} />
+      <div className="mt-3 flex flex-wrap items-center gap-2 border-t pt-3 md:mt-4 md:pt-4">
+        <SlidersHorizontal
+          className="mr-2 text-muted"
+          size={15}
+          aria-hidden="true"
+        />
         {['all', ...categories].map((c) => (
           <Button
             key={c}

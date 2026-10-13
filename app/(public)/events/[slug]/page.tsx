@@ -48,12 +48,16 @@ export default async function Page({
       </div>
       <div className="grid gap-10 md:grid-cols-[2fr_1fr]">
         <div>
-          <h2 className="mb-4 text-2xl font-semibold">About the gathering</h2>
+          <h2 className="mb-4 text-2xl font-medium tracking-[-0.02em]">
+            About the gathering
+          </h2>
           <p className="mb-8 leading-8 text-muted">{e.description}</p>
           <MapPlaceholder label="Event location map coming soon" />
         </div>
-        <aside className="h-fit rounded-xl border bg-surface p-6">
-          <h2 className="text-lg font-semibold">Event details</h2>
+        <aside className="h-fit rounded-xl border bg-surface p-6 md:sticky md:top-24">
+          <h2 className="text-lg font-medium tracking-[-0.02em]">
+            Event details
+          </h2>
           <dl className="mt-6 space-y-5 text-sm">
             <div>
               <dt className="text-muted">Date & time</dt>

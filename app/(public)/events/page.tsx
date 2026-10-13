@@ -1,4 +1,5 @@
 import { SEO } from '@/components/seo';
+import { PageHeader } from '@/components/page-header';
 import { EventList } from '@/components/content-lists';
 export const metadata = SEO(
   'Events',
@@ -7,12 +8,12 @@ export const metadata = SEO(
 );
 export default function Page() {
   return (
-    <div className="container-shell py-12">
-      <p className="eyebrow mb-4">The community calendar</p>
-      <h1 className="page-title">Good cars. Better company.</h1>
-      <p className="mb-10 mt-5 max-w-xl leading-7 text-muted">
-        Find a reason to take the scenic route and meet fellow owners.
-      </p>
+    <div className="container-shell pb-12 pt-10 md:pt-14">
+      <PageHeader
+        kicker="The community calendar"
+        title="Good cars. Better company."
+        description="Find a reason to take the scenic route and meet fellow owners."
+      />
       <EventList />
     </div>
   );

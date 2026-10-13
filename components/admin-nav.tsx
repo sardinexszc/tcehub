@@ -10,7 +10,7 @@ import {
   Settings,
   ArrowUpRight,
 } from 'lucide-react';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { Logo } from '@/components/logo';
 const links = [
   ['Overview', '/admin', LayoutDashboard],
   ['Shops', '/admin/shops', Store],
@@ -22,36 +22,34 @@ const links = [
 export function AdminNav() {
   const path = usePathname();
   return (
-    <aside className="border-b bg-surface p-4 md:sticky md:top-0 md:h-dvh md:w-60 md:shrink-0 md:border-b-0 md:border-r md:p-6">
-      <div className="flex items-center justify-between">
-        <Link href="/" className="text-2xl font-black tracking-tighter">
-          TCE<span className="text-accent">HUB</span>
-        </Link>
-        <ThemeToggle />
-      </div>
-      <p className="mb-7 mt-2 text-xs text-muted">Content workspace · demo</p>
+    <aside className="border-b bg-surface p-4 md:sticky md:top-0 md:flex md:h-dvh md:w-64 md:shrink-0 md:flex-col md:border-b-0 md:border-r md:p-5">
+      <Logo />
+      <p className="meta mb-6 mt-4 md:mb-8">Content workspace · demo</p>
       <nav
         aria-label="Admin navigation"
-        className="flex gap-2 overflow-x-auto md:flex-col"
+        className="-mx-1 flex gap-1 overflow-x-auto px-1 md:flex-col"
       >
-        {links.map(([label, href, Icon]) => (
-          <Link
-            key={href}
-            href={href}
-            aria-current={path === href ? 'page' : undefined}
-            className={`flex shrink-0 items-center gap-3 rounded-lg px-3 py-3 text-sm ${path === href ? 'bg-accent text-white' : 'text-muted hover:bg-background'}`}
-          >
-            <Icon size={17} />
-            {label}
-          </Link>
-        ))}
+        {links.map(([label, href, Icon]) => {
+          const active = path === href;
+          return (
+            <Link
+              key={href}
+              href={href}
+              aria-current={active ? 'page' : undefined}
+              className={`flex shrink-0 items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors ${active ? 'bg-accent font-medium text-accent-foreground' : 'text-muted hover:bg-subtle hover:text-foreground'}`}
+            >
+              <Icon size={17} aria-hidden="true" />
+              {label}
+            </Link>
+          );
+        })}
       </nav>
       <Link
         href="/"
-        className="mt-8 hidden items-center gap-2 text-xs text-muted md:flex"
+        className="mt-auto hidden items-center justify-between rounded-md border px-3 py-2.5 text-[13px] transition-colors hover:border-foreground/40 md:flex"
       >
         View public site
-        <ArrowUpRight size={14} />
+        <ArrowUpRight size={14} aria-hidden="true" />
       </Link>
     </aside>
   );

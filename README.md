@@ -35,7 +35,7 @@ Open http://localhost:3000. No environment values are needed for local browsing.
 - `public/images`: original SVG placeholders; replace with licensed community photography
 - `app/sitemap.ts`, `app/robots.ts`: public discovery; admin excluded
 
-`SEO()` wraps Next.js server metadata; it is not a head-tag client component. Detail routes pre-render their mock slugs and call `notFound()` for unknown records. Images use `next/image`. The font uses Next.js Geist optimization. Dark theme defaults to dark; the toggle persists light/dark via next-themes.
+`SEO()` wraps Next.js server metadata; it is not a head-tag client component. Detail routes pre-render their mock slugs and call `notFound()` for unknown records. Images use `next/image`. Fonts use Next.js Geist and Geist Mono optimization. The interface is light-only; design tokens live in `app/globals.css` and `tailwind.config.ts`.
 
 ## Preview behavior
 

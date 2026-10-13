@@ -8,16 +8,22 @@ export function Breadcrumbs({
   return (
     <nav
       aria-label="Breadcrumb"
-      className="mb-8 flex flex-wrap items-center gap-2 text-xs text-muted"
+      className="mb-8 flex flex-wrap items-center gap-2 font-mono text-[11px] uppercase tracking-[0.12em] text-muted"
     >
-      <Link href="/">Home</Link>
+      <Link className="hover:text-foreground" href="/">
+        Home
+      </Link>
       {items.map((item, i) => (
         <span className="flex items-center gap-2" key={i}>
-          <ChevronRight size={12} />
+          <ChevronRight size={12} aria-hidden="true" />
           {item.href ? (
-            <Link href={item.href}>{item.label}</Link>
+            <Link className="hover:text-foreground" href={item.href}>
+              {item.label}
+            </Link>
           ) : (
-            <span aria-current="page">{item.label}</span>
+            <span aria-current="page" className="text-foreground">
+              {item.label}
+            </span>
           )}
         </span>
       ))}

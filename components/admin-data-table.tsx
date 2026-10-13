@@ -25,11 +25,11 @@ const columns: ColumnDef<AdminRow>[] = [
     accessorKey: 'name',
     header: ({ column }) => (
       <button
-        className="flex items-center gap-2"
+        className="flex cursor-pointer items-center gap-2 uppercase hover:text-foreground"
         onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
       >
         Title / name
-        <ArrowUpDown size={14} />
+        <ArrowUpDown size={13} aria-hidden="true" />
       </button>
     ),
     cell: ({ row }) => <span className="font-medium">{row.original.name}</span>,
@@ -93,10 +93,10 @@ export function AdminDataTable({
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
           <p className="eyebrow mb-3">Content management</p>
-          <h1 className="text-4xl font-semibold">{title}</h1>
+          <h1 className="text-4xl font-medium tracking-[-0.035em]">{title}</h1>
         </div>
         <Button disabled>
-          <Plus size={17} />
+          <Plus size={17} aria-hidden="true" />
           Add New
         </Button>
       </div>
@@ -112,7 +112,7 @@ export function AdminDataTable({
       />
       <div className="overflow-x-auto rounded-xl border bg-surface">
         <table className="w-full min-w-[640px] text-left text-sm">
-          <thead className="border-b">
+          <thead className="border-b bg-subtle/60">
             {table.getHeaderGroups().map((h) => (
               <tr key={h.id}>
                 {h.headers.map((c) => (
@@ -126,7 +126,7 @@ export function AdminDataTable({
                           ? 'descending'
                           : undefined
                     }
-                    className="p-4 text-xs font-medium text-muted"
+                    className="px-4 py-3 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted"
                   >
                     {flexRender(c.column.columnDef.header, c.getContext())}
                   </th>
@@ -136,7 +136,10 @@ export function AdminDataTable({
           </thead>
           <tbody>
             {table.getRowModel().rows.map((r) => (
-              <tr key={r.id} className="border-b last:border-0">
+              <tr
+                key={r.id}
+                className="border-b transition-colors last:border-0 hover:bg-subtle/50"
+              >
                 {r.getVisibleCells().map((c) => (
                   <td key={c.id} className="p-4">
                     {flexRender(c.column.columnDef.cell, c.getContext())}
@@ -155,7 +158,7 @@ export function AdminDataTable({
         </table>
       </div>
       <div className="mt-5 flex flex-wrap items-center justify-between gap-4">
-        <p role="status" className="text-xs text-muted">
+        <p role="status" className="meta">
           {table.getFilteredRowModel().rows.length} records · Page{' '}
           {table.getState().pagination.pageIndex + 1} of{' '}
           {Math.max(1, table.getPageCount())}

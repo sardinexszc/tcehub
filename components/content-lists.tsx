@@ -52,7 +52,7 @@ export function EventList() {
   return (
     <>
       <div
-        className="mb-6 flex gap-2"
+        className="mb-6 inline-flex gap-1 rounded-lg border bg-surface p-1"
         role="tablist"
         aria-label="Event timeline"
       >
@@ -63,8 +63,10 @@ export function EventList() {
             id={`tab-${t}`}
             aria-controls="event-panel"
             aria-selected={tab === t}
-            variant={tab === t ? 'default' : 'outline'}
-            className="capitalize"
+            tabIndex={tab === t ? 0 : -1}
+            size="sm"
+            variant={tab === t ? 'default' : 'ghost'}
+            className="min-w-24 capitalize"
             onClick={() => setTab(t)}
             onKeyDown={(e) => {
               if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
@@ -78,7 +80,7 @@ export function EventList() {
           </Button>
         ))}
       </div>
-      <p className="mb-8 text-xs text-muted">
+      <p className="meta mb-8">
         Demo calendar reference: October 13, 2026. Events are fictional.
       </p>
       <div

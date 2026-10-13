@@ -5,7 +5,10 @@ export function Card({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
-      className={cn('rounded-xl border bg-surface overflow-hidden', className)}
+      className={cn(
+        'overflow-hidden rounded-xl border bg-surface transition-[border-color,box-shadow] duration-300',
+        className,
+      )}
       {...props}
     />
   );

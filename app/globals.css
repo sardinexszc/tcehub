@@ -3,50 +3,82 @@
 @tailwind utilities;
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 240 12% 8%;
+    /* Paper, ink, and a single lime signal. Lime is a fill only — never text on light. */
+    --background: 60 12% 95%;
+    --foreground: 80 6% 7%;
     --surface: 0 0% 100%;
-    --muted: 220 9% 40%;
-    --border: 220 13% 86%;
-  }
-  .dark {
-    --background: 240 15% 5%;
-    --foreground: 240 11% 96%;
-    --surface: 240 11% 9%;
-    --muted: 218 11% 65%;
-    --border: 240 7% 19%;
+    --subtle: 60 10% 91%;
+    --muted: 84 4% 35%;
+    --border: 60 8% 85%;
+    --accent: 71 90% 60%;
+    --accent-strong: 72 78% 52%;
+    --accent-foreground: 80 6% 7%;
+    --danger: 4 77% 40%;
   }
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply bg-background font-sans text-foreground antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
   :focus-visible {
-    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-foreground ring-offset-2 ring-offset-background;
   }
   ::selection {
-    background: #e11d2e;
-    color: white;
+    @apply bg-accent text-accent-foreground;
   }
   html {
     scroll-behavior: smooth;
   }
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *,
+    *::before,
+    *::after {
+      transition-duration: 0.01ms !important;
+      animation-duration: 0.01ms !important;
+    }
+  }
 }
 @layer components {
   .container-shell {
-    @apply mx-auto w-full max-w-7xl px-5 md:px-8;
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-5 md:px-8;
   }
+  /* Small monospaced label with a lime square marker, after the reference's spec labels. */
   .eyebrow {
-    @apply text-xs font-semibold uppercase tracking-[0.2em] text-accent;
+    @apply inline-flex items-center gap-2.5 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted;
+  }
+  .eyebrow::before {
+    content: '';
+    @apply size-2 shrink-0 rounded-[2px] bg-accent ring-1 ring-foreground/15;
+  }
+  .meta {
+    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-muted;
   }
   .page-title {
-    @apply text-4xl font-semibold tracking-tight md:text-6xl;
+    @apply text-4xl font-medium leading-[1.04] tracking-[-0.035em] md:text-6xl;
   }
   .section-space {
-    @apply py-12 md:py-20;
+    @apply py-14 md:py-24;
   }
   .content-grid {
-    @apply grid gap-6 sm:grid-cols-2 lg:grid-cols-3;
+    @apply grid gap-5 sm:grid-cols-2 lg:grid-cols-3;
+  }
+  /* Hairline cell grid: the gap shows the border colour through. */
+  .hairline-grid {
+    @apply grid gap-px overflow-hidden rounded-xl border bg-border;
+  }
+  .hairline-grid > * {
+    @apply bg-surface;
+  }
+  .media-mono {
+    @apply grayscale transition-[filter,transform] duration-700 ease-out group-hover:grayscale-0;
   }
 }

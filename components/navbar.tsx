@@ -4,49 +4,42 @@ import { usePathname } from 'next/navigation';
 import { Search, ArrowUpRight } from 'lucide-react';
 import { navigation } from '@/lib/navigation';
 import { MobileNav } from '@/components/mobile-nav';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { Logo } from '@/components/logo';
 import { Button } from '@/components/ui/button';
 export function Navbar() {
   const path = usePathname();
   return (
-    <header className="sticky top-0 z-40 border-b bg-background/95 backdrop-blur">
-      <div className="container-shell flex h-20 items-center justify-between gap-4">
-        <Link
-          href="/"
-          aria-label="TCEHub home"
-          className="text-2xl font-black tracking-tighter"
-        >
-          TCE<span className="text-accent">HUB</span>
-          <span className="ml-2 hidden text-[9px] font-medium tracking-widest text-muted xl:inline">
-            CAMRY COMMUNITY
-          </span>
-        </Link>
+    <header className="sticky top-0 z-40 border-b border-foreground/[0.06] bg-background/85 backdrop-blur-md">
+      <div className="container-shell flex h-[72px] items-center justify-between gap-4">
+        <Logo />
         <nav
           aria-label="Main navigation"
-          className="hidden items-center gap-7 lg:flex"
+          className="hidden items-center gap-1.5 lg:flex"
         >
-          {navigation.map(([label, href]) => (
-            <Link
-              key={href}
-              href={href}
-              aria-current={path.startsWith(href) ? 'page' : undefined}
-              className={`text-sm transition-colors hover:text-accent ${path.startsWith(href) ? 'text-foreground' : 'text-muted'}`}
-            >
-              {label}
-            </Link>
-          ))}
+          {navigation.map(([label, href]) => {
+            const active = path.startsWith(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                aria-current={active ? 'page' : undefined}
+                className={`flex h-10 items-center rounded-full border px-5 text-[13px] transition-colors duration-200 ${active ? 'border-foreground bg-foreground font-medium text-background' : 'bg-surface hover:border-foreground/40'}`}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
-        <div className="flex items-center gap-1">
-          <Button asChild variant="ghost" size="icon">
+        <div className="flex items-center gap-1.5">
+          <Button asChild variant="outline" size="icon" className="size-10">
             <Link href="/shops#search" aria-label="Search shop directory">
-              <Search size={18} />
+              <Search size={18} aria-hidden="true" />
             </Link>
           </Button>
-          <ThemeToggle />
-          <Button asChild className="ml-2 hidden md:inline-flex">
+          <Button asChild size="sm" className="hidden md:inline-flex">
             <Link href="/contact#submit-shop">
               Submit a Shop
-              <ArrowUpRight size={16} />
+              <ArrowUpRight size={15} aria-hidden="true" />
             </Link>
           </Button>
           <MobileNav />

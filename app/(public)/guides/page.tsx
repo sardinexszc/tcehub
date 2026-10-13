@@ -1,4 +1,5 @@
 import { SEO } from '@/components/seo';
+import { PageHeader } from '@/components/page-header';
 import { GuideList } from '@/components/content-lists';
 export const metadata = SEO(
   'Guides',
@@ -7,13 +8,12 @@ export const metadata = SEO(
 );
 export default function Page() {
   return (
-    <div className="container-shell py-12">
-      <p className="eyebrow mb-4">The ownership bookshelf</p>
-      <h1 className="page-title">Know your Camry.</h1>
-      <p className="mb-10 mt-5 max-w-xl leading-7 text-muted">
-        Practical starting points for buying, maintaining, and enjoying your
-        car.
-      </p>
+    <div className="container-shell pb-12 pt-10 md:pt-14">
+      <PageHeader
+        kicker="The ownership bookshelf"
+        title="Know your Camry."
+        description="Practical starting points for buying, maintaining, and enjoying your car."
+      />
       <GuideList />
     </div>
   );
