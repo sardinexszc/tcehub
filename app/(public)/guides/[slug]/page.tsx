@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { guides } from '@/lib/mock-data';
 import { SEO } from '@/components/seo';
 import { ArticlePage } from '@/components/article-page';
-import { SectionHeading } from '@/components/section-heading';
+import { Related } from '@/components/related';
 import { GuideCard } from '@/components/content-cards';
 
 export function generateStaticParams() {
@@ -31,28 +31,20 @@ export default async function Page({
     <ArticlePage
       title={item.title}
       cover={item.coverImage}
-      meta={'TCEHub Editorial · General ownership guidance'}
+      meta={'Written by the TCEHub editors as general guidance'}
       tags={[item.generation, item.category]}
       content={item.content}
       kind="Guides"
       toc={true}
-      tint="cream"
     >
-      <section className="section-space">
-        <SectionHeading
-          kicker="Keep exploring"
-          title="More guides"
-          href="/guides"
-        />
-        <div className="content-grid">
-          {guides
-            .filter((i) => i.id !== item.id)
-            .slice(0, 3)
-            .map((i, n) => (
-              <GuideCard key={i.id} guide={i} index={n} />
-            ))}
-        </div>
-      </section>
+      <Related title="More guides" href="/guides" linkLabel="All guides">
+        {guides
+          .filter((i) => i.id !== item.id)
+          .slice(0, 3)
+          .map((i) => (
+            <GuideCard key={i.id} guide={i} />
+          ))}
+      </Related>
     </ArticlePage>
   );
 }

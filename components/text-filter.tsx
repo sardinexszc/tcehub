@@ -1,6 +1,6 @@
 'use client';
-import { cn } from '@/lib/utils';
-/** Comma-separated text toggles: "(Category) All, Parts, Repair". */
+import { cn, sentence } from '@/lib/utils';
+/** Pill chips; the selected chip is filled ink. */
 export function TextFilter({
   label,
   options,
@@ -8,6 +8,7 @@ export function TextFilter({
   onChange,
   allLabel = 'All',
   capitalize = false,
+  tone = 'light',
 }: {
   label: string;
   options: readonly string[];
@@ -15,34 +16,34 @@ export function TextFilter({
   onChange: (value: string) => void;
   allLabel?: string;
   capitalize?: boolean;
+  tone?: 'light' | 'night';
 }) {
   const items = [['all', allLabel], ...options.map((o) => [o, o])] as const;
   return (
-    <div role="group" aria-label={label} className="text-[15px] leading-6">
-      <span className="eyebrow mr-2 text-muted">{label}</span>
-      {items.map(([key, text], i) => (
-        <span key={key}>
+    <div role="group" aria-label={label} className="flex flex-wrap gap-2">
+      {items.map(([key, text]) => {
+        const on = value === key;
+        return (
           <button
+            key={key}
             type="button"
-            aria-pressed={value === key}
+            aria-pressed={on}
             onClick={() => onChange(key)}
             className={cn(
-              'cursor-pointer transition-colors',
-              capitalize && 'capitalize',
-              value === key
-                ? 'underline decoration-1 underline-offset-[3px]'
-                : 'text-muted hover:text-foreground',
+              'h-9 cursor-pointer rounded-full px-4 text-[14px] font-medium transition-colors',
+              tone === 'light'
+                ? on
+                  ? 'bg-foreground text-surface'
+                  : 'bg-subtle text-foreground hover:bg-border'
+                : on
+                  ? 'bg-white text-foreground'
+                  : 'bg-white/10 text-white hover:bg-white/20',
             )}
           >
-            {text}
+            {capitalize ? sentence(text) : text}
           </button>
-          {i < items.length - 1 && (
-            <span aria-hidden="true" className="text-muted">
-              ,{' '}
-            </span>
-          )}
-        </span>
-      ))}
+        );
+      })}
     </div>
   );
 }

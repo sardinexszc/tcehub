@@ -5,23 +5,28 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: token('page'),
-        foreground: token('foreground'),
-        surface: token('surface'),
-        subtle: token('subtle'),
-        muted: token('muted'),
-        border: token('border'),
+        background: token('mist'),
+        surface: token('paper'),
+        foreground: token('ink'),
+        muted: token('slate'),
+        border: token('line'),
+        subtle: token('well'),
+        night: token('night'),
+        tail: token('tail'),
         accent: {
-          DEFAULT: token('foreground'),
-          strong: token('foreground'),
-          foreground: token('surface'),
+          DEFAULT: token('ink'),
+          strong: token('ink'),
+          foreground: token('paper'),
         },
-        danger: token('danger'),
+        danger: token('tail'),
       },
       fontFamily: {
-        sans: ['var(--font-geist)', 'Helvetica Neue', 'Arial', 'sans-serif'],
+        sans: ['var(--font-sans)', 'Helvetica Neue', 'Arial', 'sans-serif'],
         serif: ['var(--font-serif)', 'Georgia', 'serif'],
-        display: ['var(--font-display)', 'Arial Narrow', 'sans-serif'],
+      },
+      borderRadius: {
+        panel: '32px',
+        media: '20px',
       },
       transitionTimingFunction: {
         out: 'cubic-bezier(0.22, 1, 0.36, 1)',

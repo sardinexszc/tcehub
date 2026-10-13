@@ -1,3 +1,4 @@
+import { MapPin } from 'lucide-react';
 export function MapPlaceholder({
   label = 'Map coming soon',
 }: {
@@ -7,19 +8,14 @@ export function MapPlaceholder({
     <div
       role="img"
       aria-label={label}
-      className="relative flex aspect-[16/9] items-end justify-between border border-foreground p-4 text-[15px]"
-      style={{
-        backgroundImage:
-          'linear-gradient(hsl(var(--foreground) / 0.08) 1px, transparent 1px),linear-gradient(90deg,hsl(var(--foreground) / 0.08) 1px,transparent 1px)',
-        backgroundSize: '48px 48px',
-      }}
+      className="relative grid aspect-[16/10] place-items-center overflow-hidden rounded-media bg-subtle bg-[linear-gradient(hsl(var(--line))_1px,transparent_1px),linear-gradient(90deg,hsl(var(--line))_1px,transparent_1px)] bg-[size:44px_44px]"
     >
-      <span
-        aria-hidden="true"
-        className="absolute left-1/2 top-1/2 size-3 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground ring-8 ring-foreground/10"
-      />
-      <span>({label})</span>
-      <span className="meta">Interactive map on the way</span>
+      <span className="grid size-12 place-items-center rounded-full bg-foreground text-surface ring-8 ring-foreground/10">
+        <MapPin size={18} aria-hidden="true" />
+      </span>
+      <span className="absolute bottom-4 left-4 rounded-full bg-surface px-4 py-2 text-[14px] font-medium">
+        {label}
+      </span>
     </div>
   );
 }

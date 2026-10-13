@@ -28,24 +28,31 @@ export default async function Page({
   const g = galleries.find((g) => g.slug === slug);
   if (!g) notFound();
   return (
-    <div data-tint="stone" className="container-shell pt-6 md:pt-10">
-      <Breadcrumbs
-        items={[{ label: 'Galleries', href: '/galleries' }, { label: g.title }]}
-      />
-      <h1 className="mt-10 max-w-[12ch] font-serif text-[clamp(3rem,8vw,8.5rem)] leading-[0.92] tracking-[-0.045em] md:mt-16">
-        {g.title}
-      </h1>
-      <div className="mb-12 mt-10 md:mt-14">
-        <StatRow
+    <div className="shell grid gap-3 md:gap-5">
+      <header className="panel p-6 md:p-12">
+        <Breadcrumbs
           items={[
-            ['Date', formatDate(g.date)],
-            ['Images', String(g.images.length)],
-            ['Tags', g.tags.join(', ')],
-            ['Credit', imageCredit],
+            { label: 'Galleries', href: '/galleries' },
+            { label: g.title },
           ]}
         />
+        <h1 className="mt-10 max-w-[16ch] text-[clamp(2.75rem,6vw,5rem)] font-medium leading-[0.98] tracking-[-0.045em]">
+          {g.title}
+        </h1>
+        <div className="mt-12 border-t pt-8">
+          <StatRow
+            items={[
+              ['Shot on', formatDate(g.date)],
+              ['Photos', String(g.images.length)],
+              ['Tagged', g.tags.join(', ')],
+              ['Artwork', imageCredit.replace('Illustrations © ', '')],
+            ]}
+          />
+        </div>
+      </header>
+      <div className="panel p-3">
+        <ImageGallery images={g.images} title={g.title} masonry />
       </div>
-      <ImageGallery images={g.images} title={g.title} masonry />
     </div>
   );
 }

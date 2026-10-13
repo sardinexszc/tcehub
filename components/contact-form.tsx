@@ -3,16 +3,20 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
+import { ArrowDisc } from '@/components/ui/button';
 const schema = z.object({
   name: z.string().trim().min(2, 'Enter your name.'),
-  email: z.string().email('Enter a valid email.'),
-  shop: z.string().trim().min(2, 'Enter the shop name.'),
-  city: z.string().trim().min(2, 'Enter the city.'),
-  message: z.string().trim().min(15, 'Please include at least 15 characters.'),
+  email: z.string().email('Enter an email address like name@example.com.'),
+  shop: z.string().trim().min(2, 'Enter the shop’s name.'),
+  city: z.string().trim().min(2, 'Enter the city the shop is in.'),
+  message: z
+    .string()
+    .trim()
+    .min(15, 'Tell us a little more, at least 15 characters.'),
 });
 type Values = z.infer<typeof schema>;
 const field =
-  'w-full border-0 border-b border-foreground bg-transparent px-0 py-2 font-serif text-2xl tracking-[-0.02em] placeholder:text-muted/60 focus-visible:ring-0 focus-visible:ring-offset-0 aria-[invalid=true]:border-danger';
+  'mt-2 w-full rounded-2xl bg-subtle px-5 py-3.5 text-[16px] placeholder:text-muted aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-tail';
 export function ContactForm() {
   const [done, setDone] = useState(false);
   const {
@@ -22,21 +26,22 @@ export function ContactForm() {
     reset,
   } = useForm<Values>({ resolver: zodResolver(schema) });
   return done ? (
-    <div role="status" className="border-y border-foreground py-10">
-      <h2 className="font-serif text-4xl tracking-[-0.03em]">
-        (Thank you) — your form looks good.
-      </h2>
-      <p className="mt-3 text-[15px] text-muted">
-        This preview validated the form locally. Nothing was sent or saved.
+    <div role="status" className="rounded-[24px] bg-subtle p-8">
+      <h3 className="text-[28px] font-medium tracking-[-0.03em]">
+        Recommendation checked
+      </h3>
+      <p className="mt-2 text-muted">
+        This preview checks the form in your browser only. Nothing was sent or
+        saved.
       </p>
       <button
-        className="link-u mt-6 cursor-pointer text-[15px]"
+        className="link-u mt-6 cursor-pointer text-[15px] font-medium"
         onClick={() => {
           setDone(false);
           reset();
         }}
       >
-        Try another submission →
+        Recommend another shop
       </button>
     </div>
   ) : (
@@ -47,19 +52,19 @@ export function ContactForm() {
           true,
         ); /* TODO: replace with a server-side submission workflow. */
       })}
-      className="grid gap-8"
+      className="grid gap-5 sm:grid-cols-2"
     >
       {(
         [
           ['name', 'Your name'],
-          ['email', 'Email address'],
+          ['email', 'Your email'],
           ['shop', 'Shop name'],
           ['city', 'City'],
         ] as const
-      ).map(([key, label], i) => (
+      ).map(([key, label]) => (
         <div key={key}>
-          <label htmlFor={key} className="block text-[15px]">
-            ({String(i + 1).padStart(2, '0')}) {label}
+          <label htmlFor={key} className="text-[15px] font-medium">
+            {label}
           </label>
           <input
             id={key}
@@ -76,44 +81,49 @@ export function ContactForm() {
             <p
               id={`${key}-error`}
               role="alert"
-              className="mt-2 text-[15px] text-danger"
+              className="mt-2 text-[14px] text-tail"
             >
               {errors[key]?.message}
             </p>
           )}
         </div>
       ))}
-      <div>
-        <label htmlFor="message" className="block text-[15px]">
-          (05) What should we know?
+      <div className="sm:col-span-2">
+        <label htmlFor="message" className="text-[15px] font-medium">
+          Why would you send a friend there?
         </label>
         <textarea
           id="message"
-          rows={4}
+          rows={5}
           className={`${field} resize-y`}
           {...register('message')}
           aria-invalid={!!errors.message}
-          aria-describedby={errors.message ? 'message-error' : undefined}
+          aria-describedby={errors.message ? 'message-error' : 'message-hint'}
         />
-        {errors.message && (
+        {errors.message ? (
           <p
             id="message-error"
             role="alert"
-            className="mt-2 text-[15px] text-danger"
+            className="mt-2 text-[14px] text-tail"
           >
             {errors.message.message}
           </p>
+        ) : (
+          <p id="message-hint" className="mt-2 text-[14px] text-muted">
+            The work they did, the generation of your car, and how it went.
+          </p>
         )}
       </div>
-      <div className="flex flex-wrap items-baseline justify-between gap-4">
-        <p className="meta max-w-xs text-muted">
-          UI preview only — validated in your browser, not sent or saved
+      <div className="flex flex-wrap items-center justify-between gap-4 sm:col-span-2">
+        <p className="text-[14px] text-muted">
+          Preview only. Nothing is sent or saved yet.
         </p>
         <button
           type="submit"
-          className="cursor-pointer font-serif text-3xl tracking-[-0.03em] underline decoration-1 underline-offset-[0.14em] transition-opacity hover:opacity-60"
+          className="group inline-flex h-12 cursor-pointer items-center gap-4 rounded-full bg-foreground pl-6 pr-2 text-[15px] font-medium text-surface"
         >
-          Send it →
+          Send recommendation
+          <ArrowDisc />
         </button>
       </div>
     </form>

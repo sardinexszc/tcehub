@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { events, cutouts } from '@/lib/mock-data';
-import { formatDate } from '@/lib/utils';
+import { formatDate, sentence } from '@/lib/utils';
 import { SEO } from '@/components/seo';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { MapPlaceholder } from '@/components/map-placeholder';
@@ -29,14 +29,11 @@ export default async function Page({
   const e = events.find((e) => e.slug === slug);
   if (!e) notFound();
   return (
-    <div data-tint="blush" className="container-shell pt-6 md:pt-10">
-      <Breadcrumbs
-        items={[{ label: 'Events', href: '/events' }, { label: e.title }]}
-      />
-      <div className="relative">
+    <div className="shell grid gap-3 md:gap-5">
+      <header className="relative isolate overflow-hidden rounded-panel bg-night p-6 text-white md:p-12">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 -top-6 bottom-0 md:left-[30%]"
+          className="absolute inset-x-0 bottom-[22%] top-[30%] -z-10 opacity-90 [mask-image:radial-gradient(ellipse_55%_60%_at_50%_55%,#000_40%,transparent)] md:bottom-[18%] md:left-[38%] md:top-[6%]"
         >
           <Image
             src={cutouts[events.indexOf(e) % cutouts.length]}
@@ -44,36 +41,48 @@ export default async function Page({
             fill
             priority
             sizes="70vw"
-            className="object-contain opacity-50 grayscale"
+            className="object-contain object-bottom"
           />
         </div>
-        <h1 className="relative mt-10 max-w-[10ch] py-10 font-serif text-[clamp(3rem,9vw,9.5rem)] leading-[0.9] tracking-[-0.045em] md:mt-16 md:py-20">
-          <span className="block font-sans text-[15px] tracking-normal">
-            (Community {e.type})
-          </span>
+        <Breadcrumbs
+          tone="night"
+          items={[{ label: 'Events', href: '/events' }, { label: e.title }]}
+        />
+        <p className="label mt-10 text-white/60">Community {e.type}</p>
+        <h1 className="display mt-5 max-w-[10ch] text-[clamp(3.5rem,9vw,8rem)]">
           {e.title}
         </h1>
-      </div>
-      <StatRow
-        items={[
-          ['Date', formatDate(e.date)],
-          ['Time', '7:00 AM PHT'],
-          ['Venue', e.location],
-          ['Registration', 'Coming soon'],
-        ]}
-      />
-      <div className="mt-16 grid gap-12 lg:grid-cols-2 lg:gap-5">
-        <h2 className="eyebrow">About the gathering</h2>
-        <div className="grid gap-10">
-          <p className="max-w-[22em] font-serif text-3xl leading-[1.15] tracking-[-0.025em] md:text-4xl">
-            {e.description}
-          </p>
-          <MapPlaceholder label="Event location map coming soon" />
-          <p className="meta text-muted">
-            Fictional event for interface preview · add to calendar coming soon
+        <div className="mt-[clamp(8rem,22vw,18rem)] border-t border-white/15 pt-8">
+          <StatRow
+            tone="night"
+            items={[
+              ['Date', formatDate(e.date)],
+              ['Starts', '7:00 AM'],
+              ['Venue', e.location],
+              ['Entry', 'Free, all generations'],
+            ]}
+          />
+        </div>
+      </header>
+      <section
+        aria-labelledby="about-meet"
+        className="panel grid gap-10 p-6 md:grid-cols-2 md:p-12"
+      >
+        <div>
+          <h2
+            id="about-meet"
+            className="text-[28px] font-medium tracking-[-0.03em]"
+          >
+            About this {e.type}
+          </h2>
+          <p className="mt-4 max-w-lg text-muted">{sentence(e.description)}</p>
+          <p className="mt-6 text-[14px] text-muted">
+            Fictional event for the interface preview. Calendar invites are
+            coming soon.
           </p>
         </div>
-      </div>
+        <MapPlaceholder label="Venue map coming soon" />
+      </section>
     </div>
   );
 }

@@ -2,7 +2,7 @@ import { notFound } from 'next/navigation';
 import { journals } from '@/lib/mock-data';
 import { SEO } from '@/components/seo';
 import { ArticlePage } from '@/components/article-page';
-import { SectionHeading } from '@/components/section-heading';
+import { Related } from '@/components/related';
 import { JournalCard } from '@/components/content-cards';
 import { formatDate } from '@/lib/utils';
 export function generateStaticParams() {
@@ -31,28 +31,24 @@ export default async function Page({
     <ArticlePage
       title={item.title}
       cover={item.coverImage}
-      meta={`${item.author} · ${formatDate(item.date)}`}
+      meta={`By ${item.author}, ${formatDate(item.date)}`}
       tags={item.tags}
       content={item.content}
       kind="Journals"
       toc={false}
-      tint="white"
     >
-      <section className="section-space">
-        <SectionHeading
-          kicker="Keep exploring"
-          title="More stories"
-          href="/journals"
-        />
-        <div className="content-grid">
-          {journals
-            .filter((i) => i.id !== item.id)
-            .slice(0, 3)
-            .map((i, n) => (
-              <JournalCard key={i.id} journal={i} index={n} />
-            ))}
-        </div>
-      </section>
+      <Related
+        title="More build stories"
+        href="/journals"
+        linkLabel="All journals"
+      >
+        {journals
+          .filter((i) => i.id !== item.id)
+          .slice(0, 3)
+          .map((i) => (
+            <JournalCard key={i.id} journal={i} />
+          ))}
+      </Related>
     </ArticlePage>
   );
 }

@@ -7,7 +7,7 @@ export const Input = React.forwardRef<
   <input
     ref={ref}
     className={cn(
-      'h-11 w-full border-0 border-b border-foreground bg-transparent px-0 text-base placeholder:text-muted focus-visible:ring-0 focus-visible:ring-offset-0 aria-[invalid=true]:border-danger',
+      'h-11 w-full rounded-full bg-subtle px-5 text-base placeholder:text-muted aria-[invalid=true]:ring-2 aria-[invalid=true]:ring-tail',
       className,
     )}
     {...props}

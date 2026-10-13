@@ -3,42 +3,32 @@
 @tailwind utilities;
 @layer base {
   :root {
-    /* Monochrome editorial system. Each page may tint the paper via data-tint. */
-    --page: 0 0% 100%;
-    --foreground: 0 0% 0%;
-    --surface: 0 0% 100%;
-    --subtle: 0 0% 96%;
-    --muted: 0 0% 34%;
-    --border: 0 0% 0%;
-    --danger: 4 77% 40%;
-  }
-  body:has([data-tint='cream']) {
-    --page: 44 36% 92%;
-    --surface: 44 40% 96%;
-    --subtle: 44 24% 87%;
-  }
-  body:has([data-tint='blush']) {
-    --page: 22 45% 92%;
-    --surface: 22 50% 96%;
-    --subtle: 22 30% 87%;
-  }
-  body:has([data-tint='stone']) {
-    --page: 60 6% 91%;
-    --surface: 60 8% 96%;
-    --subtle: 60 4% 86%;
+    /* Showroom palette: mist page, paper panels, ink type, night hero, one tail-light red. */
+    --mist: 210 11% 90%;
+    --paper: 0 0% 100%;
+    --well: 210 14% 95%;
+    --ink: 216 11% 9%;
+    --slate: 214 8% 40%;
+    --line: 210 11% 84%;
+    --night: 0 0% 0%;
+    --tail: 351 85% 42%;
   }
   * {
     @apply border-border;
   }
   body {
-    @apply bg-background font-sans text-[17px] leading-[1.25] text-foreground antialiased;
-    transition: background-color 0.4s ease;
+    @apply bg-background font-sans text-[17px] leading-[1.5] text-foreground antialiased;
+  }
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
   }
   :focus-visible {
-    @apply outline-none ring-1 ring-foreground ring-offset-4 ring-offset-background;
+    @apply outline-none ring-2 ring-foreground ring-offset-2 ring-offset-background;
   }
   ::selection {
-    @apply bg-foreground text-background;
+    @apply bg-foreground text-surface;
   }
   html {
     scroll-behavior: smooth;
@@ -55,51 +45,75 @@
     }
   }
 }
+/* Point light: registered so position changes ease instead of jumping. */
+@property --lx {
+  syntax: '<length-percentage>';
+  inherits: true;
+  initial-value: 6%;
+}
+@property --ly {
+  syntax: '<length-percentage>';
+  inherits: true;
+  initial-value: 64%;
+}
+.spot-stage {
+  --r: clamp(150px, 19vw, 280px);
+  transition:
+    --lx 0.35s ease-out,
+    --ly 0.35s ease-out;
+}
+.spot-stage[data-intro] {
+  transition:
+    --lx 1.8s cubic-bezier(0.65, 0, 0.35, 1),
+    --ly 1.8s cubic-bezier(0.65, 0, 0.35, 1);
+}
+@media (prefers-reduced-motion: reduce) {
+  .spot-stage {
+    --lx: 56%;
+    --ly: 70%;
+  }
+}
 @keyframes fade {
   from {
     opacity: 0;
   }
 }
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
 @layer components {
-  .container-shell {
-    @apply w-full px-4 md:px-5;
+  .shell {
+    @apply mx-auto w-full max-w-[1440px] px-3 md:px-5;
   }
-  /* Parenthetical label, Watson-style: (Recently), (Contact). */
-  .eyebrow {
-    @apply text-[15px] tracking-[-0.01em];
+  .panel {
+    @apply rounded-panel bg-surface;
   }
-  .eyebrow::before {
-    content: '(';
+  /* "• Who we are" — the only label style on the site. */
+  .label {
+    @apply inline-flex items-center gap-2.5 text-[15px] font-medium;
   }
-  .eyebrow::after {
-    content: ')';
+  .label::before {
+    content: '';
+    @apply size-1.5 shrink-0 rounded-full bg-current;
   }
-  .meta {
-    @apply text-[11px] uppercase leading-[1.2] tracking-[0.02em];
+  .display {
+    @apply font-serif font-normal leading-[0.95] tracking-[-0.02em];
   }
-  .page-title {
-    @apply font-serif text-5xl leading-[0.95] tracking-[-0.03em] md:text-7xl;
+  .heading {
+    @apply text-[clamp(2rem,3.6vw,3rem)] font-medium leading-[1.08] tracking-[-0.03em];
   }
-  .wordmark {
-    @apply font-display font-semibold uppercase leading-[0.8] tracking-[-0.02em];
-    font-stretch: 68%;
+  .stat {
+    @apply text-[clamp(2.25rem,4vw,3.25rem)] font-medium leading-none tracking-[-0.04em] tabular-nums;
+  }
+  .stat-caption {
+    @apply mt-2 text-[13px] leading-tight text-muted;
   }
   .link-u {
-    @apply underline decoration-1 underline-offset-[0.14em] transition-opacity hover:opacity-60;
-  }
-  .section-space {
-    @apply py-16 md:py-28;
+    @apply underline decoration-1 underline-offset-4 transition-opacity hover:opacity-60;
   }
   .content-grid {
-    @apply grid gap-x-5 gap-y-12 sm:grid-cols-2 lg:grid-cols-3;
-  }
-  .rule-list > * {
-    @apply border-b border-foreground;
-  }
-  .rule-list > *:first-child {
-    @apply border-t;
-  }
-  .media-mono {
-    @apply transition-[transform,filter] duration-700 ease-out;
+    @apply grid gap-3 sm:grid-cols-2 lg:grid-cols-3;
   }
 }

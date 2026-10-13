@@ -1,6 +1,5 @@
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
-import { PageIndex } from '@/components/page-index';
 export default function PublicLayout({
   children,
 }: {
@@ -13,7 +12,6 @@ export default function PublicLayout({
         {children}
       </main>
       <Footer />
-      <PageIndex />
     </>
   );
 }

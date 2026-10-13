@@ -7,12 +7,12 @@ export default function AdminLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-dvh md:flex">
+    <div className="shell min-h-dvh gap-5 py-3 md:flex md:py-5">
       <AdminNav />
-      <main id="main-content" className="min-w-0 flex-1 p-4 md:p-10">
-        <p className="meta mb-10 text-muted">
-          Preview workspace · mock content only · publishing controls are
-          disabled
+      <main id="main-content" className="mt-3 min-w-0 flex-1 md:mt-0">
+        <p className="mb-3 flex items-center gap-2.5 px-2 text-[14px] text-muted">
+          <span aria-hidden="true" className="size-2 rounded-full bg-tail" />
+          Preview workspace with demo content. Publishing is turned off.
         </p>
         {children}
       </main>

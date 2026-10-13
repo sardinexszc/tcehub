@@ -1,18 +1,13 @@
 import type { Metadata, Viewport } from 'next';
-import { Archivo, Geist, Newsreader } from 'next/font/google';
+import { Instrument_Serif, Urbanist } from 'next/font/google';
 import { siteUrl } from '@/components/seo';
 import './globals.css';
-const geist = Geist({ subsets: ['latin'], variable: '--font-geist' });
-const serif = Newsreader({
+const sans = Urbanist({ subsets: ['latin'], variable: '--font-sans' });
+const serif = Instrument_Serif({
   subsets: ['latin'],
-  variable: '--font-serif',
-  axes: ['opsz'],
+  weight: '400',
   style: ['normal', 'italic'],
-});
-const display = Archivo({
-  subsets: ['latin'],
-  variable: '--font-display',
-  axes: ['wdth'],
+  variable: '--font-serif',
 });
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -24,7 +19,7 @@ export const metadata: Metadata = {
     'Discover Camry specialists, build journals, community events, and ownership guides.',
 };
 export const viewport: Viewport = {
-  themeColor: '#FFFFFF',
+  themeColor: '#E4E7EA',
   colorScheme: 'light',
 };
 export default function RootLayout({
@@ -34,12 +29,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body
-        className={`${geist.variable} ${serif.variable} ${display.variable}`}
-      >
+      <body className={`${sans.variable} ${serif.variable}`}>
         <a
           href="#main-content"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:bg-foreground focus:p-3 focus:text-background"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-full focus:bg-foreground focus:px-5 focus:py-3 focus:text-surface"
         >
           Skip to content
         </a>

@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {
@@ -9,74 +9,93 @@ import {
   guides,
   generations,
   demoToday,
-  cutouts,
 } from '@/lib/mock-data';
 import { formatDate } from '@/lib/utils';
 import { GalleryCard } from '@/components/content-cards';
-import { SplitPage } from '@/components/split-page';
+import { PageIntro } from '@/components/page-intro';
 import { TextFilter } from '@/components/text-filter';
 import { EmptyState } from '@/components/empty-state';
+import { ArrowDisc } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
-const pad = (n: number) => String(n).padStart(2, '0');
-/** Index of rows; a preview image appears beside the hovered row on large screens. */
+/** Case-study rows: copy beside framed media, alternating sides. */
 export function JournalList() {
   const [tag, setTag] = useState('all');
   const tags = [...new Set(journals.flatMap((j) => j.tags))];
   const list = journals.filter((j) => tag === 'all' || j.tags.includes(tag));
   return (
-    <div data-tint="white" className="container-shell pt-8 md:pt-14">
-      <div className="grid gap-8 lg:grid-cols-2 lg:gap-5">
-        <h1 className="page-title">(Behind the Build)</h1>
-        <div className="grid content-end gap-4">
-          <p className="max-w-[23rem] indent-[4.5em] leading-[1.3]">
-            Stories, decisions, and lessons from the people behind the wheel —
-            written by owners, for owners.
+    <div className="shell grid gap-3 md:gap-5">
+      <PageIntro
+        label="Build journals"
+        title="What owners changed, and what they learned"
+        intro={
+          <p>
+            Honest write-ups from people who did the work: the plan, the costs,
+            and what they would do differently next time.
           </p>
-          <TextFilter
-            label="Filter"
-            options={tags}
-            value={tag}
-            onChange={setTag}
-            allLabel="All stories"
-          />
-        </div>
-      </div>
-      <ol className="rule-list mt-16 md:mt-24">
-        {list.map((j, i) => (
-          <li key={j.id}>
-            <Link
-              href={`/journals/${j.slug}`}
-              className="group relative grid grid-cols-[2.5rem_1fr] gap-x-4 gap-y-2 py-5 md:grid-cols-[1fr_2fr_1fr] md:items-baseline md:gap-x-5"
+        }
+      >
+        <TextFilter
+          label="Filter stories"
+          options={tags}
+          value={tag}
+          onChange={setTag}
+          allLabel="All stories"
+        />
+      </PageIntro>
+      {!list.length ? (
+        <EmptyState />
+      ) : (
+        <div className="panel divide-y p-3 md:p-4">
+          {list.map((j, i) => (
+            <article
+              key={j.id}
+              className="grid items-center gap-6 p-3 py-8 md:grid-cols-2 md:gap-14 md:p-8"
             >
-              <span className="text-[15px]">({pad(i + 1)})</span>
-              <span className="font-serif text-3xl leading-[1.02] tracking-[-0.03em] decoration-1 underline-offset-[0.12em] group-hover:underline md:text-5xl">
-                {j.title}
-              </span>
-              <span className="meta col-start-2 md:col-start-auto md:text-right">
-                {j.author}
-                <br />
-                {formatDate(j.date)} — {j.tags.join(', ')}
-              </span>
-              <span className="pointer-events-none absolute right-[18%] top-1/2 z-10 hidden aspect-[4/5] w-44 -translate-y-1/2 rotate-2 overflow-hidden opacity-0 transition-opacity duration-300 group-hover:opacity-100 lg:block">
+              <div className={i % 2 ? 'md:order-2' : ''}>
+                <p className="label text-muted">{j.tags.join(', ')}</p>
+                <h2 className="mt-4 text-[clamp(2rem,3.6vw,3rem)] font-medium leading-[1.02] tracking-[-0.04em]">
+                  <Link
+                    href={`/journals/${j.slug}`}
+                    className="hover:underline"
+                  >
+                    {j.title}
+                  </Link>
+                </h2>
+                <p className="mt-4 max-w-md text-muted">{j.excerpt}</p>
+                <p className="mt-6 text-[15px]">
+                  {j.author}
+                  <span className="text-muted">, {formatDate(j.date)}</span>
+                </p>
+              </div>
+              <Link
+                href={`/journals/${j.slug}`}
+                tabIndex={-1}
+                aria-hidden="true"
+                className="group relative block aspect-[4/3] overflow-hidden rounded-media bg-night"
+              >
                 <Image
                   src={j.coverImage}
                   alt=""
                   fill
-                  sizes="176px"
-                  className="object-cover"
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.03]"
                 />
-              </span>
-            </Link>
-          </li>
-        ))}
-      </ol>
-      {!list.length && <EmptyState />}
+                <ArrowDisc className="absolute right-4 top-4" />
+              </Link>
+            </article>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
-/** Partnerships-style scroller: pinned "TCEHub ×", serif list, image + stats for the centred item. */
+/** Night panel calendar with upcoming / past tabs. */
 export function EventList() {
   const [tab, setTab] = useState<'upcoming' | 'past'>('upcoming');
+  const count = (t: 'upcoming' | 'past') =>
+    events.filter((e) =>
+      t === 'upcoming' ? e.date >= demoToday : e.date < demoToday,
+    ).length;
   const list = events
     .filter((e) =>
       tab === 'upcoming' ? e.date >= demoToday : e.date < demoToday,
@@ -86,249 +105,176 @@ export function EventList() {
         ? a.date.localeCompare(b.date)
         : b.date.localeCompare(a.date),
     );
-  const [active, setActive] = useState(0);
-  const items = useRef<(HTMLLIElement | null)[]>([]);
-  useEffect(() => {
-    let frame = 0;
-    const update = () => {
-      frame = 0;
-      const mid = window.innerHeight / 2;
-      let best = 0;
-      let bestDist = Infinity;
-      items.current.forEach((el, i) => {
-        if (!el) return;
-        const r = el.getBoundingClientRect();
-        const d = Math.abs(r.top + r.height / 2 - mid);
-        if (d < bestDist) {
-          bestDist = d;
-          best = i;
-        }
-      });
-      setActive(best);
-    };
-    const onScroll = () => {
-      if (!frame) frame = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    return () => {
-      window.removeEventListener('scroll', onScroll);
-      window.removeEventListener('resize', onScroll);
-      cancelAnimationFrame(frame);
-    };
-  }, [tab]);
-  const current = list[Math.min(active, list.length - 1)];
+  const fmt = (d: string, o: Intl.DateTimeFormatOptions) =>
+    new Intl.DateTimeFormat('en-PH', { ...o, timeZone: 'Asia/Manila' }).format(
+      new Date(d),
+    );
   return (
-    <div data-tint="blush" className="container-shell">
-      <div className="grid gap-6 pt-8 md:grid-cols-[1fr_1fr_1fr] md:pt-14">
-        <h1 className="page-title md:col-span-2">(The Calendar)</h1>
-        <div className="grid content-end gap-3 text-[15px]">
-          <div
-            role="tablist"
-            aria-label="Event timeline"
-            className="flex gap-4"
-          >
-            {(['upcoming', 'past'] as const).map((t) => (
-              <button
-                key={t}
-                role="tab"
-                id={`tab-${t}`}
-                aria-selected={tab === t}
-                aria-controls="event-panel"
-                tabIndex={tab === t ? 0 : -1}
-                onClick={() => {
-                  setTab(t);
-                  setActive(0);
-                }}
-                onKeyDown={(e) => {
-                  if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
-                    const next = t === 'past' ? 'upcoming' : 'past';
-                    setTab(next);
-                    document.getElementById(`tab-${next}`)?.focus();
-                  }
-                }}
-                className={cn(
-                  'cursor-pointer capitalize',
-                  tab === t
-                    ? 'underline decoration-1 underline-offset-[3px]'
-                    : 'text-muted hover:text-foreground',
-                )}
-              >
-                {t} (
-                {
-                  events.filter((e) =>
-                    t === 'upcoming' ? e.date >= demoToday : e.date < demoToday,
-                  ).length
-                }
-                )
-              </button>
-            ))}
-          </div>
-          <p className="meta text-muted">
-            Demo calendar · reference date Oct 13, 2026
+    <div className="shell">
+      <PageIntro
+        tone="night"
+        label="Meets and events"
+        title={
+          <span className="display text-[clamp(3.25rem,8vw,7rem)]">
+            See you on the road.
+          </span>
+        }
+        intro={
+          <p>
+            Coffee runs, show-and-shines, and cruises for Camry owners. Every
+            meet is free and open to all generations. Dates are demo content.
           </p>
-        </div>
-      </div>
-      <div
-        id="event-panel"
-        role="tabpanel"
-        aria-labelledby={`tab-${tab}`}
-        className="relative mt-10"
+        }
       >
-        {current && (
-          <div
-            aria-hidden="true"
-            className="pointer-events-none sticky top-0 -mb-[100svh] hidden h-[100svh] md:block"
-          >
-            <div className="absolute inset-x-[18%] inset-y-[16%]">
-              <Image
-                key={current.id}
-                src={cutouts[events.indexOf(current) % cutouts.length]}
-                alt=""
-                fill
-                sizes="60vw"
-                className="animate-[fade_0.5s_ease-out] object-contain opacity-60 grayscale"
-              />
-            </div>
-            <span className="absolute left-[16.6%] top-1/2 -translate-y-1/2 font-serif text-[clamp(3rem,6.5vw,7rem)] leading-none tracking-[-0.04em]">
-              TCEHub <span className="font-sans text-[0.3em]">×</span>
-            </span>
-            <div className="meta absolute bottom-6 left-[8.3%] grid grid-cols-2 gap-x-10">
-              <span>
-                ({current.title})
-                <br />
-                Community {current.type}
-              </span>
-              <span>
-                Date : {formatDate(current.date)}
-                <br />
-                Time : 7:00 AM PHT
-                <br />
-                Venue : {current.location}
-              </span>
-            </div>
-          </div>
-        )}
-        <ol className="relative md:ml-[50%] md:py-[42svh]">
-          {list.map((e, i) => (
-            <li
-              key={e.id}
-              ref={(el) => {
-                items.current[i] = el;
+        <div
+          role="tablist"
+          aria-label="Event timeline"
+          className="inline-flex gap-1 rounded-full bg-white/10 p-1"
+        >
+          {(['upcoming', 'past'] as const).map((t) => (
+            <button
+              key={t}
+              role="tab"
+              id={`tab-${t}`}
+              aria-selected={tab === t}
+              aria-controls="event-panel"
+              tabIndex={tab === t ? 0 : -1}
+              onClick={() => setTab(t)}
+              onKeyDown={(e) => {
+                if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                  const next = t === 'past' ? 'upcoming' : 'past';
+                  setTab(next);
+                  document.getElementById(`tab-${next}`)?.focus();
+                }
               }}
-              className="border-b border-foreground/20 py-3 md:border-0 md:py-0"
+              className={cn(
+                'h-10 cursor-pointer rounded-full px-5 text-[15px] font-medium transition-colors',
+                tab === t ? 'bg-white text-foreground' : 'text-white/70',
+              )}
             >
+              {t === 'upcoming' ? 'Upcoming' : 'Past'} ({count(t)})
+            </button>
+          ))}
+        </div>
+        <ul
+          id="event-panel"
+          role="tabpanel"
+          aria-labelledby={`tab-${tab}`}
+          className="mt-8 divide-y divide-white/15 border-y border-white/15"
+        >
+          {list.map((e) => (
+            <li key={e.id}>
               <Link
                 href={`/events/${e.slug}`}
-                className={cn(
-                  'block font-serif text-[clamp(2.4rem,6.5vw,7rem)] leading-[1.02] tracking-[-0.04em] transition-opacity duration-300 hover:opacity-60',
-                  i !== active && 'md:opacity-25',
-                )}
+                className="group grid grid-cols-[4rem_1fr_auto] items-center gap-4 px-2 py-5 transition-colors hover:bg-white/[0.06] md:grid-cols-[5rem_1.3fr_1fr_6rem_auto] md:px-4"
               >
-                {e.title}
+                <span className="leading-none">
+                  <span className="block text-[13px] text-white/55">
+                    {fmt(e.date, { month: 'short' })}
+                  </span>
+                  <span className="mt-1 block text-4xl font-medium tabular-nums tracking-[-0.04em]">
+                    {fmt(e.date, { day: '2-digit' })}
+                  </span>
+                </span>
+                <span className="text-[21px] font-medium tracking-[-0.02em]">
+                  {e.title}
+                  <span className="mt-1 block text-[15px] font-normal text-white/55 md:hidden">
+                    {e.location}
+                  </span>
+                </span>
+                <span className="hidden text-[15px] text-white/55 md:block">
+                  {e.location}
+                </span>
+                <span className="hidden text-[15px] capitalize text-white/55 md:block">
+                  {e.type}
+                </span>
+                <ArrowDisc className="opacity-60 transition-opacity group-hover:opacity-100" />
               </Link>
-              <span className="meta mt-1 block md:hidden">
-                {formatDate(e.date)} — {e.location}
-              </span>
             </li>
           ))}
-        </ol>
-        {!list.length && <EmptyState title="No events yet" />}
-      </div>
+        </ul>
+        {!list.length && (
+          <p className="py-10 text-white/60">No meets on the calendar yet.</p>
+        )}
+      </PageIntro>
     </div>
   );
 }
 export function GalleryList() {
   return (
-    <SplitPage
-      tint="stone"
-      title="Through the Lens"
-      intro={
-        <p>
-          Community gatherings, memorable roads, and details worth a closer look
-          — captured by members and shared with the hub.
-        </p>
-      }
-    >
-      <div className="grid gap-x-5 gap-y-12 sm:grid-cols-2">
-        {galleries.map((g, i) => (
-          <GalleryCard key={g.id} gallery={g} index={i} />
+    <div className="shell grid gap-3 md:gap-5">
+      <PageIntro
+        label="Galleries"
+        title="Camrys, caught on camera"
+        intro={
+          <p>
+            Photo sets from meets, drives, and garages, shared by members of the
+            hub.
+          </p>
+        }
+      />
+      <div className="content-grid">
+        {galleries.map((g) => (
+          <GalleryCard key={g.id} gallery={g} />
         ))}
       </div>
-    </SplitPage>
+    </div>
   );
 }
-/** Capabilities-style groups: large sans heading, count, ruled numbered rows. */
+/** Text-first cell grid, AegisAI style. */
 export function GuideList() {
   const [generation, setGeneration] = useState('all');
   const list = guides.filter(
     (g) => generation === 'all' || g.generation === generation,
   );
-  const groups = [...new Set(list.map((g) => g.category))];
   return (
-    <SplitPage
-      tint="cream"
-      title="Know Your Camry"
-      intro={
-        <p>
-          Practical starting points for buying, maintaining, and enjoying your
-          car. General orientation from the community — always confirm details
-          with a qualified mechanic.
-        </p>
-      }
-      aside={
-        <div className="max-w-md">
-          <TextFilter
-            label="Generation"
-            options={generations}
-            value={generation}
-            onChange={setGeneration}
-          />
-        </div>
-      }
-    >
-      <div className="grid gap-16">
-        {groups.map((group) => {
-          const rows = list.filter((g) => g.category === group);
-          return (
-            <section key={group} aria-labelledby={`group-${group}`}>
-              <h2
-                id={`group-${group}`}
-                className="mb-6 text-5xl font-normal tracking-[-0.045em] md:text-7xl"
+    <div className="shell grid gap-3 md:gap-5">
+      <PageIntro
+        label="Ownership guides"
+        title="Know your Camry before you buy, fix, or modify it"
+        intro={
+          <p>
+            Plain-language starting points from the community. Always confirm
+            the details with a qualified mechanic.
+          </p>
+        }
+      >
+        <TextFilter
+          label="Generation"
+          options={generations}
+          value={generation}
+          onChange={setGeneration}
+          allLabel="All generations"
+        />
+      </PageIntro>
+      {!list.length ? (
+        <EmptyState
+          title="No guides for this generation yet"
+          description="Choose another generation, or suggest a topic through the contact page."
+        />
+      ) : (
+        <ul className="panel grid gap-px overflow-hidden bg-border sm:grid-cols-2 lg:grid-cols-3">
+          {list.map((g) => (
+            <li key={g.id} className="bg-surface">
+              <Link
+                href={`/guides/${g.slug}`}
+                className="group flex h-full min-h-[260px] flex-col p-6 md:p-8"
               >
-                {group} <span aria-hidden="true">→</span>
-              </h2>
-              <div className="grid grid-cols-[3rem_1fr] md:grid-cols-[1fr_3fr]">
-                <span className="border-t border-foreground py-2 text-[15px]">
-                  ({rows.length})
+                <span className="flex items-center justify-between text-[14px] text-muted">
+                  {g.category}
+                  <span className="rounded-full bg-subtle px-3 py-1 font-medium text-foreground">
+                    {g.generation}
+                  </span>
                 </span>
-                <ul className="rule-list">
-                  {rows.map((g, i) => (
-                    <li key={g.id}>
-                      <Link
-                        href={`/guides/${g.slug}`}
-                        className="group grid grid-cols-[1fr_auto] items-baseline gap-x-4 py-2 text-[15px] md:grid-cols-[1.6fr_1fr_auto]"
-                      >
-                        <span className="decoration-1 underline-offset-[3px] group-hover:underline">
-                          {g.title}
-                        </span>
-                        <span className="hidden text-muted md:block">
-                          {g.generation}
-                        </span>
-                        <span className="tabular-nums">{i + 1}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </section>
-          );
-        })}
-        {!list.length && (
-          <EmptyState title="No guides for this generation yet" />
-        )}
-      </div>
-    </SplitPage>
+                <h2 className="mt-auto pt-10 text-[clamp(1.6rem,2.4vw,2rem)] font-medium leading-[1.08] tracking-[-0.03em] group-hover:underline">
+                  {g.title}
+                </h2>
+                <p className="mt-3 text-[15px] text-muted">{g.excerpt}</p>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }

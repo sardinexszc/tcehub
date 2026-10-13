@@ -1,81 +1,71 @@
-import Image from 'next/image';
 import Link from 'next/link';
 import { navigation } from '@/lib/navigation';
-import { events, demoToday, imageCredit, wallpapers } from '@/lib/mock-data';
-import { formatDate } from '@/lib/utils';
+import { imageCredit } from '@/lib/mock-data';
+import { LogoMark } from '@/components/logo';
+import { ArrowDisc } from '@/components/ui/button';
 export function Footer() {
-  const next = events
-    .filter((e) => e.date >= demoToday)
-    .sort((a, b) => a.date.localeCompare(b.date))[0];
   return (
-    <footer className="container-shell mt-24 pb-6 text-[15px] md:mt-36">
-      <div className="grid gap-12 md:grid-cols-[1fr_1fr] lg:grid-cols-[2fr_1fr_1fr]">
-        <div className="max-w-[180px]">
-          <p className="meta mb-2">
-            Currently celebrating
-            <br />
-            the XV40 generation
-          </p>
-          <div className="relative aspect-[3/4] w-full overflow-hidden bg-subtle">
-            <Image
-              src={wallpapers[0]}
-              alt="Illustrated silver XV40 Camry on a dark textured backdrop"
-              fill
-              sizes="180px"
-              className="object-cover grayscale"
-            />
-          </div>
-        </div>
-        <div className="grid content-start gap-5">
-          <h2 className="eyebrow">Recently</h2>
-          <p className="max-w-xs">
-            We’re building the most useful directory for Camry owners.{' '}
-            <Link href="/contact#submit-shop" className="link-u">
-              Submit a shop
-            </Link>{' '}
-            or{' '}
-            <Link href="/about" className="link-u">
-              learn more →
-            </Link>
-          </p>
-          {next && (
-            <p className="max-w-xs">
-              Next on the calendar:{' '}
-              <Link href={`/events/${next.slug}`} className="link-u">
-                {next.title}
-              </Link>
-              , {formatDate(next.date)}.
+    <footer className="shell mt-3 pb-3 md:mt-5 md:pb-5">
+      <div className="rounded-panel bg-night px-6 pb-6 pt-12 text-white md:px-10 md:pt-16">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
+          <div>
+            <p className="display max-w-[11ch] text-[clamp(3rem,6vw,5.5rem)]">
+              Every Camry has a keeper.
             </p>
-          )}
-        </div>
-        <div className="grid content-start gap-5">
-          <h2 className="eyebrow">Explore</h2>
-          <ul className="grid gap-1">
-            {navigation.map(([label, href], i) => (
-              <li key={href}>
+            <Link
+              href="/contact#submit-shop"
+              className="group mt-8 inline-flex h-12 items-center gap-4 rounded-full bg-white pl-6 pr-2 text-[15px] font-medium text-foreground"
+            >
+              Recommend a shop
+              <ArrowDisc tone="ink" />
+            </Link>
+          </div>
+          <div>
+            <h2 className="label text-white/60">Explore</h2>
+            <ul className="mt-5 grid gap-2 text-lg">
+              {navigation.map(([label, href]) => (
+                <li key={href}>
+                  <Link
+                    href={href}
+                    className="transition-opacity hover:opacity-60"
+                  >
+                    {label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div>
+            <h2 className="label text-white/60">Community</h2>
+            <ul className="mt-5 grid gap-2 text-lg">
+              <li>
                 <Link
-                  href={href}
+                  href="/about"
                   className="transition-opacity hover:opacity-60"
                 >
-                  <sup className="mr-0.5 text-[9px]">({i + 1})</sup>
-                  {label}
+                  About TCEHub
                 </Link>
               </li>
-            ))}
-          </ul>
-          <p className="text-muted">
-            Facebook, Instagram
-            <br />
-            (coming soon)
-          </p>
+              <li>
+                <Link
+                  href="/contact"
+                  className="transition-opacity hover:opacity-60"
+                >
+                  Get in touch
+                </Link>
+              </li>
+              <li className="text-white/50">Facebook, soon</li>
+              <li className="text-white/50">Instagram, soon</li>
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="meta mt-16 flex flex-wrap justify-between gap-x-6 gap-y-2 md:mt-24">
-        <span>
-          © {new Date().getFullYear()} TCEHub — independent, not affiliated with
-          Toyota
-        </span>
-        <span>{imageCredit} · demo content</span>
+        <div className="mt-16 flex flex-wrap items-center justify-between gap-4 border-t border-white/15 pt-6 text-[13px] text-white/55">
+          <span className="flex items-center gap-2.5">
+            <LogoMark className="size-4" />© {new Date().getFullYear()} TCEHub.
+            Independent, not affiliated with Toyota.
+          </span>
+          <span>{imageCredit}. All listings are demo content.</span>
+        </div>
       </div>
     </footer>
   );

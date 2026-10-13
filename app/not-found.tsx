@@ -1,19 +1,38 @@
+import Image from 'next/image';
 import Link from 'next/link';
+import { ArrowDisc } from '@/components/ui/button';
 export default function NotFound() {
   return (
-    <main
-      id="main-content"
-      className="container-shell flex min-h-dvh flex-col items-center justify-center text-center"
-    >
-      <p className="text-[15px]">(404) End of this road</p>
-      <h1 className="wordmark mt-6 text-[34vw] md:text-[24vw]">Lost</h1>
-      <p className="mt-8 max-w-[18em] font-serif text-3xl leading-[1.1] tracking-[-0.03em]">
-        The address may have changed. Let’s get you{' '}
-        <Link href="/" className="link-u">
-          back to the hub
+    <main id="main-content" className="shell flex min-h-dvh py-3 md:py-5">
+      <div className="relative isolate flex flex-1 flex-col items-center justify-center overflow-hidden rounded-panel bg-night px-6 py-24 text-center text-white">
+        <div
+          aria-hidden="true"
+          className="absolute inset-x-0 bottom-[-10%] top-[45%] -z-10 opacity-30 [mask-image:radial-gradient(ellipse_50%_60%_at_50%_70%,#000,transparent)]"
+        >
+          <Image
+            src="/images/camry-cutout-3.webp"
+            alt=""
+            fill
+            sizes="100vw"
+            className="object-contain object-bottom"
+          />
+        </div>
+        <p className="text-[15px] text-white/60">Page not found</p>
+        <h1 className="display mt-4 text-[clamp(3.5rem,9vw,8rem)]">
+          Wrong turn.
+        </h1>
+        <p className="mt-5 max-w-sm text-white/65">
+          That page has moved or never existed. The hub is still where you left
+          it.
+        </p>
+        <Link
+          href="/"
+          className="group mt-9 inline-flex h-12 items-center gap-4 rounded-full bg-white pl-6 pr-2 text-[15px] font-medium text-foreground"
+        >
+          Back to TCEHub
+          <ArrowDisc tone="ink" />
         </Link>
-        .
-      </p>
+      </div>
     </main>
   );
 }

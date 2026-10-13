@@ -1,5 +1,5 @@
 import { SEO } from '@/components/seo';
-import { SplitPage } from '@/components/split-page';
+import { PageIntro } from '@/components/page-intro';
 import { ContactForm } from '@/components/contact-form';
 export const metadata = SEO(
   'Contact & submit a shop',
@@ -8,29 +8,36 @@ export const metadata = SEO(
 );
 export default function Contact() {
   return (
-    <SplitPage
-      title="Say Hello"
-      intro={
-        <p>
-          Have a story idea, a question, or a shop worth sharing? Good
-          recommendations start with you. Community contact details will be
-          added before launch.
-        </p>
-      }
-    >
+    <div className="shell grid gap-3 md:gap-5">
+      <PageIntro
+        label="Contact"
+        title="Know a shop that deserves to be here?"
+        intro={
+          <p>
+            Recommendations from owners are how the directory grows. For
+            anything else, community contact details arrive before launch.
+          </p>
+        }
+      />
       <section
         id="submit-shop"
         aria-labelledby="submit-shop-title"
-        className="scroll-mt-24"
+        className="panel grid scroll-mt-6 gap-10 p-6 md:p-12 lg:grid-cols-[1fr_1.6fr]"
       >
-        <h2
-          id="submit-shop-title"
-          className="mb-10 text-5xl font-normal tracking-[-0.045em] md:text-7xl"
-        >
-          Submit a Shop <span aria-hidden="true">→</span>
-        </h2>
+        <div>
+          <h2
+            id="submit-shop-title"
+            className="text-[28px] font-medium tracking-[-0.03em]"
+          >
+            Recommend a shop
+          </h2>
+          <p className="mt-3 max-w-sm text-muted">
+            Tell us who they are, where they are, and why you trust them with
+            your Camry. We check every recommendation before it is listed.
+          </p>
+        </div>
         <ContactForm />
       </section>
-    </SplitPage>
+    </div>
   );
 }
