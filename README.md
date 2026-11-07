@@ -32,7 +32,7 @@ Open http://localhost:3000. No environment values are needed for local browsing.
 - `components/ui`: shadcn-style Radix/CVA primitives, configured through `components.json`
 - `components`: cards, filtering, pagination, drawer, lightbox, content rendering, metadata factory, tables
 - `lib/mock-data.ts`: typed content arrays (8 shops, 6 journals, 8 events, 6 galleries, 6 guides)
-- `public/images`: original SVG placeholders; replace with licensed community photography
+- `public/images`: six original colour SVG scenes (`scene-*.svg`) plus the hero cutout; replace with licensed community photography
 - `app/sitemap.ts`, `app/robots.ts`: public discovery; admin excluded
 
 `SEO()` wraps Next.js server metadata; it is not a head-tag client component. Detail routes pre-render their mock slugs and call `notFound()` for unknown records. Images use `next/image`. Fonts use Next.js Geist and Geist Mono optimization. The interface is light-only; design tokens live in `app/globals.css` and `tailwind.config.ts`.

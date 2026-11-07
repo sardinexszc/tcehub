@@ -1,5 +1,6 @@
 import { Navbar } from '@/components/navbar';
 import { Footer } from '@/components/footer';
+import { RevealObserver } from '@/components/reveal-observer';
 export default function PublicLayout({
   children,
 }: {
@@ -12,6 +13,7 @@ export default function PublicLayout({
         {children}
       </main>
       <Footer />
+      <RevealObserver />
     </>
   );
 }

@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { ArrowUpRight, Check } from 'lucide-react';
 import { Hero } from '@/components/hero';
+import { CommunityBand } from '@/components/community-band';
 import { SectionHeading } from '@/components/section-heading';
 import { ShopCard } from '@/components/shop-card';
 import { JournalCard, EventRow, GalleryCard } from '@/components/content-cards';
@@ -24,7 +25,7 @@ export default function Home() {
             href="/shops"
             linkLabel="Explore all shops"
           />
-          <div className="content-grid">
+          <div className="content-grid" data-reveal>
             {shops
               .filter((s) => s.featured)
               .map((s) => (
@@ -39,7 +40,7 @@ export default function Home() {
             href="/events"
             linkLabel="Full calendar"
           />
-          <div className="hairline-grid">
+          <div className="hairline-grid" data-reveal>
             {events
               .filter((e) => e.date >= demoToday)
               .sort((a, b) => a.date.localeCompare(b.date))
@@ -49,13 +50,16 @@ export default function Home() {
               ))}
           </div>
         </section>
-        <section className="section-space border-t">
+      </div>
+      <CommunityBand />
+      <div className="container-shell">
+        <section className="section-space">
           <SectionHeading
             kicker="Behind the build"
             title="Stories from the driver’s seat"
             href="/journals"
           />
-          <div className="content-grid">
+          <div className="content-grid" data-reveal>
             {journals.slice(0, 3).map((j) => (
               <JournalCard key={j.id} journal={j} />
             ))}
@@ -67,7 +71,7 @@ export default function Home() {
             title="A few moments worth keeping"
             href="/galleries"
           />
-          <div className="content-grid">
+          <div className="content-grid" data-reveal>
             {galleries.slice(0, 3).map((g) => (
               <GalleryCard key={g.id} gallery={g} />
             ))}
@@ -75,6 +79,7 @@ export default function Home() {
         </section>
         <section
           aria-labelledby="submit-title"
+          data-reveal
           className="hairline-grid mb-16 md:grid-cols-[1.4fr_1fr]"
         >
           <div className="flex flex-col justify-between gap-8 p-6 md:p-10">

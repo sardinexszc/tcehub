@@ -6,7 +6,7 @@ export function SEO(
   title: string,
   description: string,
   path: string,
-  image = '/images/camry-studio.svg',
+  image = '/images/scene-studio.svg',
 ): Metadata {
   return {
     title,

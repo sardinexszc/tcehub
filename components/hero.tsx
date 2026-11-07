@@ -22,17 +22,9 @@ import {
   events,
   generations,
   demoToday,
+  generationYears as years,
 } from '@/lib/mock-data';
 import { cn } from '@/lib/utils';
-const years: Record<string, string> = {
-  XV10: '1991 – 1996',
-  XV20: '1996 – 2001',
-  XV30: '2001 – 2006',
-  XV40: '2006 – 2011',
-  XV50: '2011 – 2017',
-  XV70: '2017 – 2024',
-  XV80: '2024 – present',
-};
 // Hotspot positions are percentages of the car stage; tune them when the real photo lands.
 const hotspots = [
   { label: 'Build journals', href: '/journals', x: 47, y: 30, side: 'right' },

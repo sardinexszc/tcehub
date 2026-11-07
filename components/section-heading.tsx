@@ -12,7 +12,10 @@ export function SectionHeading({
   linkLabel?: string;
 }) {
   return (
-    <div className="mb-8 flex flex-wrap items-end justify-between gap-4 md:mb-10">
+    <div
+      data-reveal
+      className="mb-8 flex flex-wrap items-end justify-between gap-4 md:mb-10"
+    >
       <div>
         {kicker && <p className="eyebrow mb-4">{kicker}</p>}
         <h2 className="text-3xl font-medium tracking-[-0.03em] md:text-4xl">

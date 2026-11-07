@@ -75,6 +75,15 @@ export const generations = [
   'XV70',
   'XV80',
 ];
+export const generationYears: Record<string, string> = {
+  XV10: '1991 – 1996',
+  XV20: '1996 – 2001',
+  XV30: '2001 – 2006',
+  XV40: '2006 – 2011',
+  XV50: '2011 – 2017',
+  XV70: '2017 – 2024',
+  XV80: '2024 – present',
+};
 export const categories: Category[] = [
   'parts',
   'repair',
@@ -88,10 +97,15 @@ export const demoToday = '2026-10-13T00:00:00+08:00';
 // All names, ratings, venues, dates, and contact details below are fictional demo data.
 // TODO: replace with Supabase query behind a server-only content repository.
 const photos = [
-  '/images/camry-studio.svg',
-  '/images/camry-road.svg',
-  '/images/camry-garage.svg',
+  '/images/scene-studio.svg',
+  '/images/scene-dusk.svg',
+  '/images/scene-garage.svg',
+  '/images/scene-coast.svg',
+  '/images/scene-night.svg',
+  '/images/scene-highland.svg',
 ];
+// Each content type starts at a different scene so neighbouring rows never repeat.
+const photo = (i: number, offset = 0) => photos[(i + offset) % photos.length];
 const shopNames = [
   'Apex Toyota Specialists',
   'Southline Auto Works',
@@ -148,7 +162,7 @@ export const shops: Shop[] = shopNames.map((name, i) => ({
   phone: '+63 000 000 0000',
   email: 'demo@example.com',
   hours: 'Monday–Saturday, 8:00 AM–5:00 PM',
-  images: [photos[i % 3], photos[(i + 1) % 3], photos[(i + 2) % 3]],
+  images: [photo(i), photo(i, 1), photo(i, 2)],
   rating: 4.5 + (i % 5) / 10,
   featured: i < 3,
 }));
@@ -166,7 +180,7 @@ export const journals: Journal[] = journalTitles.map((title, i) => ({
   title,
   excerpt:
     'The decisions, lessons, and little details behind a Camry built to be driven.',
-  coverImage: photos[i % 3],
+  coverImage: photo(i, 2),
   author: ['Marco Reyes', 'TCEHub Editorial', 'Bea Santos'][i % 3],
   date: `2026-09-${String(26 - i * 3).padStart(2, '0')}T09:00:00+08:00`,
   tags: [generations[i + 1], i % 2 ? 'OEM-plus' : 'Daily driver'],
@@ -209,7 +223,7 @@ export const events: Event[] = eventTitles.map((title, i) => ({
     'Demo Park, Alabang',
     'Sample Lakeside, Laguna',
   ][i % 3],
-  coverImage: photos[i % 3],
+  coverImage: photo(i, 4),
   type: (['meet', 'show', 'cruise', 'track'] as const)[i % 4],
 }));
 export const galleries: Gallery[] = [
@@ -219,15 +233,19 @@ export const galleries: Gallery[] = [
   'The details collection',
   'Sunday at the garage',
   'From every generation',
-].map((title, i) => ({
-  id: `gallery-${i}`,
-  slug: `album-${i + 1}`,
-  title,
-  coverImage: photos[i % 3],
-  images: [...photos, ...photos],
-  date: `2026-09-${String(24 - i * 2).padStart(2, '0')}T09:00:00+08:00`,
-  tags: ['Community', generations[i]],
-}));
+].map((title, i) => {
+  // Scene index per album, chosen to match each title (dusk, night, coast, studio, garage, highland).
+  const cover = [1, 4, 3, 0, 2, 5][i];
+  return {
+    id: `gallery-${i}`,
+    slug: `album-${i + 1}`,
+    title,
+    coverImage: photos[cover],
+    images: [...photos.slice(cover), ...photos.slice(0, cover)],
+    date: `2026-09-${String(24 - i * 2).padStart(2, '0')}T09:00:00+08:00`,
+    tags: ['Community', generations[i]],
+  };
+});
 const guideTitles = [
   'Buying your first XV50',
   'A smarter pre-purchase inspection',
@@ -242,7 +260,7 @@ export const guides: Guide[] = guideTitles.map((title, i) => ({
   title,
   excerpt:
     'A clear starting point for informed ownership, from first inspection to everyday upkeep.',
-  coverImage: photos[i % 3],
+  coverImage: photo(i, 3),
   generation: ['XV50', 'XV30', 'XV70', 'XV40', 'XV80', 'XV20'][i],
   category: i % 2 ? 'Maintenance' : 'Buying advice',
   content: `## Before you begin
