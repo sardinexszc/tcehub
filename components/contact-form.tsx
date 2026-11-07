@@ -22,10 +22,8 @@ export function ContactForm() {
     reset,
   } = useForm<Values>({ resolver: zodResolver(schema) });
   return done ? (
-    <div role="status" className="rounded-xl border bg-surface p-8">
-      <h2 className="text-2xl font-medium tracking-[-0.02em]">
-        Your form looks good.
-      </h2>
+    <div role="status" className="bg-subtle p-6 md:p-8">
+      <h2 className="text-xl font-semibold">Form checked</h2>
       <p className="mt-3 leading-7 text-muted">
         This preview validated the form locally. Nothing was sent or saved.
       </p>
@@ -37,7 +35,7 @@ export function ContactForm() {
           reset();
         }}
       >
-        Try another submission
+        Start again
       </Button>
     </div>
   ) : (
@@ -59,7 +57,7 @@ export function ContactForm() {
         ] as const
       ).map(([key, label]) => (
         <div key={key}>
-          <label htmlFor={key} className="mb-2 block text-sm font-medium">
+          <label htmlFor={key} className="mb-1.5 block text-sm font-semibold">
             {label}
           </label>
           <Input
@@ -84,12 +82,12 @@ export function ContactForm() {
         </div>
       ))}
       <div>
-        <label htmlFor="message" className="mb-2 block text-sm font-medium">
-          What should we know?
+        <label htmlFor="message" className="mb-1.5 block text-sm font-semibold">
+          What did they do for your car?
         </label>
         <textarea
           id="message"
-          className="min-h-32 w-full rounded-md border bg-surface p-3 text-base transition-colors hover:border-foreground/30 aria-[invalid=true]:border-danger sm:text-sm"
+          className="min-h-32 w-full rounded border border-foreground/20 bg-surface p-3 text-base transition-colors hover:border-foreground/50 aria-[invalid=true]:border-danger sm:text-sm"
           {...register('message')}
           aria-invalid={!!errors.message}
           aria-describedby={errors.message ? 'message-error' : undefined}
@@ -108,7 +106,7 @@ export function ContactForm() {
         UI preview only. Submissions are validated in your browser and are not
         sent or saved.
       </p>
-      <Button type="submit">Preview submission</Button>
+      <Button type="submit">Check submission</Button>
     </form>
   );
 }

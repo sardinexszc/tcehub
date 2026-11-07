@@ -1,28 +1,30 @@
 import { MapPin } from 'lucide-react';
 export function MapPlaceholder({
   label = 'Map coming soon',
+  address,
 }: {
   label?: string;
+  address?: string;
 }) {
   return (
     <div
       role="img"
       aria-label={label}
-      className="flex min-h-64 flex-col items-center justify-center gap-3 rounded-xl border bg-surface text-muted"
+      className="relative flex min-h-56 items-end bg-subtle p-4"
       style={{
         backgroundImage:
           'linear-gradient(hsl(var(--border)) 1px, transparent 1px),linear-gradient(90deg,hsl(var(--border)) 1px,transparent 1px)',
-        backgroundSize: '32px 32px',
+        backgroundSize: '48px 48px',
       }}
     >
-      <div className="rounded-md bg-accent p-3 text-accent-foreground">
-        <MapPin size={22} aria-hidden="true" />
-      </div>
-      <p className="rounded bg-surface px-3 py-1 text-sm font-medium text-foreground">
-        {label}
-      </p>
-      <p className="rounded bg-surface px-3 text-xs">
-        An interactive map is on the way.
+      <MapPin
+        size={28}
+        aria-hidden="true"
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-full fill-accent text-background"
+      />
+      <p className="bg-background px-3 py-2 text-[13px]">
+        <span className="font-semibold">{label}</span>
+        {address && <span className="block text-muted">{address}</span>}
       </p>
     </div>
   );

@@ -92,8 +92,7 @@ export function AdminDataTable({
     <>
       <div className="mb-8 flex flex-wrap items-center justify-between gap-4">
         <div>
-          <p className="eyebrow mb-3">Content management</p>
-          <h1 className="text-4xl font-medium tracking-[-0.035em]">{title}</h1>
+          <h1 className="section-title">{title}</h1>
         </div>
         <Button disabled>
           <Plus size={17} aria-hidden="true" />
@@ -110,9 +109,9 @@ export function AdminDataTable({
           table.setPageIndex(0);
         }}
       />
-      <div className="overflow-x-auto rounded-xl border bg-surface">
+      <div className="overflow-x-auto border-t-2 border-foreground">
         <table className="w-full min-w-[640px] text-left text-sm">
-          <thead className="border-b bg-subtle/60">
+          <thead className="border-b">
             {table.getHeaderGroups().map((h) => (
               <tr key={h.id}>
                 {h.headers.map((c) => (
@@ -126,7 +125,7 @@ export function AdminDataTable({
                           ? 'descending'
                           : undefined
                     }
-                    className="px-4 py-3 font-mono text-[10px] font-medium uppercase tracking-[0.14em] text-muted"
+                    className="px-4 py-3 text-xs font-semibold uppercase tracking-[0.06em] text-muted"
                   >
                     {flexRender(c.column.columnDef.header, c.getContext())}
                   </th>

@@ -31,14 +31,16 @@ export default async function Page({
     <ArticlePage
       title={item.title}
       cover={item.coverImage}
-      meta={`${item.author} · ${formatDate(item.date)}`}
+      excerpt={item.excerpt}
+      byline={item.author}
+      date={formatDate(item.date)}
       tags={item.tags}
       content={item.content}
       kind="Journals"
       toc={false}
     >
-      <section className="section-space mt-14 border-t">
-        <SectionHeading title="Keep exploring" />
+      <section className="section-space mt-10">
+        <SectionHeading title="More journals" href="/journals" />
         <div className="content-grid">
           {journals
             .filter((i) => i.id !== item.id)

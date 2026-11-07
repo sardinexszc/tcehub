@@ -1,5 +1,5 @@
 'use client';
-import { Search, SlidersHorizontal } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
@@ -53,7 +53,7 @@ export function FilterBar({
   regions: string[];
 }) {
   return (
-    <div className="mb-8 rounded-xl border bg-surface p-3 md:p-4">
+    <div className="mb-8">
       <div className="grid gap-3 md:grid-cols-[2fr_1fr_1fr]">
         <div className="relative">
           <Search
@@ -83,22 +83,21 @@ export function FilterBar({
           onChange={(region) => onChange({ ...filters, region })}
         />
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-2 border-t pt-3 md:mt-4 md:pt-4">
-        <SlidersHorizontal
-          className="mr-2 text-muted"
-          size={15}
-          aria-hidden="true"
-        />
+      <div
+        role="group"
+        aria-label="Service"
+        className="mt-4 flex flex-wrap items-center gap-2"
+      >
         {['all', ...categories].map((c) => (
           <Button
             key={c}
             size="sm"
-            variant={filters.category === c ? 'default' : 'outline'}
+            variant={filters.category === c ? 'ink' : 'outline'}
             aria-pressed={filters.category === c}
             onClick={() => onChange({ ...filters, category: c })}
             className="capitalize"
           >
-            {c === 'all' ? 'All shops' : c}
+            {c === 'all' ? 'All services' : c}
           </Button>
         ))}
       </div>

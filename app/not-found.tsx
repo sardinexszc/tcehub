@@ -2,17 +2,20 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 export default function NotFound() {
   return (
-    <main id="main-content" className="container-shell py-28 text-center">
-      <p className="eyebrow mb-5">404 / End of this road</p>
-      <h1 className="text-4xl font-medium tracking-[-0.035em]">
-        We couldn’t find that page.
-      </h1>
-      <p className="my-6 text-muted">
-        The address may have changed. Let’s get you back to the hub.
+    <main id="main-content" className="container-shell py-24">
+      <p className="eyebrow">Error 404</p>
+      <h1 className="page-title mt-3">Page not found</h1>
+      <p className="my-6 max-w-md text-muted">
+        The link may be out of date, or the listing may have been removed.
       </p>
-      <Button asChild>
-        <Link href="/">Back to TCEHub</Link>
-      </Button>
+      <div className="flex flex-wrap gap-3">
+        <Button asChild>
+          <Link href="/">Go to the home page</Link>
+        </Button>
+        <Button asChild variant="outline">
+          <Link href="/shops">Browse shops</Link>
+        </Button>
+      </div>
     </main>
   );
 }

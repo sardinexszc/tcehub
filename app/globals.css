@@ -3,16 +3,16 @@
 @tailwind utilities;
 @layer base {
   :root {
-    /* Paper, ink, and a single lime signal. Lime is a fill only — never text on light. */
-    --background: 60 12% 95%;
-    --foreground: 80 6% 7%;
+    /* White, ink, and one signal red. Red is used for actions, active states, and category labels only. */
+    --background: 0 0% 100%;
+    --foreground: 220 14% 9%;
     --surface: 0 0% 100%;
-    --subtle: 60 10% 91%;
-    --muted: 84 4% 35%;
-    --border: 60 8% 85%;
-    --accent: 71 90% 60%;
-    --accent-strong: 72 78% 52%;
-    --accent-foreground: 80 6% 7%;
+    --subtle: 220 10% 96%;
+    --muted: 220 7% 38%;
+    --border: 220 9% 87%;
+    --accent: 354 82% 42%;
+    --accent-strong: 354 82% 35%;
+    --accent-foreground: 0 0% 100%;
     --danger: 4 77% 40%;
   }
   * {
@@ -27,18 +27,12 @@
     text-wrap: balance;
   }
   :focus-visible {
-    @apply outline-none ring-2 ring-foreground ring-offset-2 ring-offset-background;
+    @apply outline-none ring-2 ring-accent ring-offset-2 ring-offset-background;
   }
   ::selection {
     @apply bg-accent text-accent-foreground;
   }
-  html {
-    scroll-behavior: smooth;
-  }
   @media (prefers-reduced-motion: reduce) {
-    html {
-      scroll-behavior: auto;
-    }
     *,
     *::before,
     *::after {
@@ -49,63 +43,39 @@
 }
 @layer components {
   .container-shell {
-    @apply mx-auto w-full max-w-7xl px-4 sm:px-5 md:px-8;
+    @apply mx-auto w-full max-w-7xl px-4 sm:px-6 md:px-8;
   }
-  /* Small monospaced label with a lime square marker, after the reference's spec labels. */
-  .eyebrow {
-    @apply inline-flex items-center gap-2.5 font-mono text-[11px] font-medium uppercase tracking-[0.18em] text-muted;
-  }
-  .eyebrow::before {
-    content: '';
-    @apply size-2 shrink-0 rounded-[2px] bg-accent ring-1 ring-foreground/15;
-  }
-  .meta {
-    @apply font-mono text-[11px] uppercase tracking-[0.14em] text-muted;
+  /* Condensed display face for headlines, after OEM model pages and motoring magazines. */
+  .display {
+    font-stretch: 75%;
+    @apply font-bold leading-[0.95] tracking-[-0.01em];
   }
   .page-title {
-    @apply text-4xl font-medium leading-[1.04] tracking-[-0.035em] md:text-6xl;
+    @apply display text-5xl uppercase md:text-7xl;
+  }
+  .section-title {
+    @apply display text-3xl md:text-[2.75rem];
+  }
+  /* Small uppercase label: category, section name, or data key. */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-[0.08em] text-accent;
+  }
+  .meta {
+    @apply text-xs font-medium uppercase tracking-[0.06em] text-muted;
   }
   .section-space {
-    @apply py-14 md:py-20;
+    @apply py-12 md:py-16;
   }
   .content-grid {
-    @apply grid gap-5 sm:grid-cols-2 lg:grid-cols-3;
+    @apply grid gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3;
   }
-  /* Hairline cell grid: the gap shows the border colour through. */
-  .hairline-grid {
-    @apply grid gap-px overflow-hidden rounded-xl border bg-border;
-  }
-  .hairline-grid > * {
-    @apply bg-surface;
-  }
-  .media-mono {
-    @apply saturate-[.85] transition-[filter,transform] duration-700 ease-out group-hover:saturate-100;
+  .text-link {
+    @apply inline-flex items-center gap-1.5 text-sm font-semibold underline-offset-4 hover:text-accent hover:underline;
   }
   .section-dark {
     @apply bg-foreground text-background;
   }
   .section-dark :focus-visible {
-    @apply ring-background ring-offset-foreground;
-  }
-}
-@layer utilities {
-  /* Scroll reveal: only hides content once JS has marked the page ready, so no-JS still shows everything. */
-  .reveal-ready [data-reveal] {
-    opacity: 0;
-    transform: translateY(18px);
-    transition:
-      opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-      transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    transition-delay: var(--reveal-delay, 0ms);
-  }
-  .reveal-ready [data-reveal].is-in {
-    opacity: 1;
-    transform: none;
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .reveal-ready [data-reveal] {
-      opacity: 1;
-      transform: none;
-    }
+    @apply ring-offset-foreground;
   }
 }

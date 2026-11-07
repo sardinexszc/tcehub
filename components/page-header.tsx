@@ -1,22 +1,24 @@
 export function PageHeader({
-  kicker,
   title,
   description,
+  aside,
 }: {
-  kicker: string;
   title: React.ReactNode;
   description?: string;
+  aside?: React.ReactNode;
 }) {
   return (
-    <header className="mb-10 grid gap-6 border-b pb-10 md:mb-12 md:grid-cols-[1.4fr_1fr] md:items-end md:pb-12">
-      <div>
-        <p className="eyebrow mb-5">{kicker}</p>
-        <h1 className="page-title">{title}</h1>
-      </div>
-      {description && (
-        <p className="max-w-md leading-7 text-muted md:justify-self-end">
-          {description}
-        </p>
+    <header className="mb-10 grid gap-5 border-b pb-8 md:mb-12 md:grid-cols-[1.5fr_1fr] md:items-end md:pb-10">
+      <h1 className="page-title">{title}</h1>
+      {(description || aside) && (
+        <div className="md:justify-self-end md:text-right">
+          {description && (
+            <p className="max-w-md text-[15px] leading-7 text-muted md:ml-auto">
+              {description}
+            </p>
+          )}
+          {aside}
+        </div>
       )}
     </header>
   );

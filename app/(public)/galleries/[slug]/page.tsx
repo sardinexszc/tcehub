@@ -27,13 +27,15 @@ export default async function Page({
   const g = galleries.find((g) => g.slug === slug);
   if (!g) notFound();
   return (
-    <div className="container-shell py-10">
+    <div className="container-shell pb-8 pt-8">
       <Breadcrumbs
         items={[{ label: 'Galleries', href: '/galleries' }, { label: g.title }]}
       />
-      <h1 className="page-title">{g.title}</h1>
-      <p className="mb-10 mt-5 text-muted">
-        {formatDate(g.date)} · {g.images.length} images · {g.tags.join(' / ')}
+      <p className="eyebrow">{g.tags.join(' · ')}</p>
+      <h1 className="page-title mt-3">{g.title}</h1>
+      <p className="mb-8 mt-4 border-b pb-6 text-sm text-muted">
+        {g.images.length} photos · {formatDate(g.date)} · Select a photo to
+        enlarge.
       </p>
       <ImageGallery images={g.images} title={g.title} masonry />
     </div>

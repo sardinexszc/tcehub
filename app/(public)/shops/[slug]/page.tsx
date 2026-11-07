@@ -1,4 +1,5 @@
 import { notFound } from 'next/navigation';
+import { Star } from 'lucide-react';
 import { shops } from '@/lib/mock-data';
 import { SEO } from '@/components/seo';
 import { Breadcrumbs } from '@/components/breadcrumbs';
@@ -30,52 +31,65 @@ export default async function ShopDetail({
   const { slug } = await params;
   const shop = shops.find((s) => s.slug === slug);
   if (!shop) notFound();
+  const related = shops
+    .filter(
+      (s) =>
+        s.id !== shop.id && s.category.some((c) => shop.category.includes(c)),
+    )
+    .slice(0, 3);
   return (
-    <div className="container-shell py-10">
+    <div className="container-shell pb-8 pt-8">
       <Breadcrumbs
         items={[{ label: 'Shops', href: '/shops' }, { label: shop.name }]}
       />
-      <div className="mb-8">
-        <div className="mb-4 flex flex-wrap gap-2">
-          {shop.category.map((c) => (
-            <Badge key={c}>{c}</Badge>
-          ))}
-        </div>
-        <h1 className="page-title">{shop.name}</h1>
-        <p className="mt-4 text-muted">
-          {shop.city} · {shop.region} · ★ {shop.rating?.toFixed(1)} demo rating
-        </p>
-      </div>
-      <ImageGallery title={shop.name} images={shop.images} />
-      <div className="grid gap-10 py-10 md:grid-cols-[2fr_1fr]">
+      <header className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="mb-4 text-2xl font-medium tracking-[-0.02em]">
-            About the shop
-          </h2>
-          <p className="leading-8 text-muted">{shop.description}</p>
-          <h2 className="meta mb-3 mt-10">Camry generations</h2>
+          <p className="eyebrow">{shop.category.join(' · ')}</p>
+          <h1 className="page-title mt-3">{shop.name}</h1>
+        </div>
+        <p className="flex items-center gap-1.5 text-sm">
+          <Star size={14} aria-hidden="true" className="fill-foreground" />
+          <span className="font-semibold tabular-nums">
+            {shop.rating?.toFixed(1)}
+          </span>
+          <span className="text-muted">demo rating</span>
+        </p>
+      </header>
+      <ImageGallery title={shop.name} images={shop.images} />
+      <div className="grid gap-12 py-12 lg:grid-cols-[1fr_340px]">
+        <div>
+          <h2 className="section-title text-2xl md:text-3xl">About the shop</h2>
+          <p className="mt-4 max-w-2xl text-base leading-8">
+            {shop.description}
+          </p>
+          <h2 className="meta mb-3 mt-10">Generations serviced</h2>
           <div className="flex flex-wrap gap-2">
             {shop.generations.map((g) => (
               <Badge key={g}>{g}</Badge>
             ))}
           </div>
-          <h2 className="meta mb-3 mt-10">Find the shop</h2>
-          <p className="mb-4 text-muted">{shop.address}</p>
-          <MapPlaceholder label="Shop map coming soon" />
+          <h2 className="meta mb-3 mt-10">Location</h2>
+          <MapPlaceholder label="Shop map coming soon" address={shop.address} />
         </div>
-        <aside className="h-fit rounded-xl border bg-surface p-6 md:sticky md:top-24">
-          <h2 className="text-lg font-medium tracking-[-0.02em]">
-            Plan your visit
-          </h2>
-          <p className="meta mt-6">Opening hours</p>
-          <p className="mt-2 text-sm">{shop.hours}</p>
-          <p className="meta mt-6">Demo contact</p>
-          <p className="mt-2 text-sm">{shop.phone}</p>
-          <p className="mt-2 break-all text-sm">{shop.email}</p>
-          <div className="mt-6 grid gap-3">
-            <Button disabled>Call shop · demo</Button>
+        <aside className="h-fit border-t-2 border-foreground lg:sticky lg:top-24">
+          <dl className="divide-y text-sm">
+            {[
+              ['Address', shop.address],
+              ['Region', shop.region],
+              ['Hours', shop.hours],
+              ['Phone', `${shop.phone} (demo)`],
+              ['Email', `${shop.email} (demo)`],
+            ].map(([k, v]) => (
+              <div key={k} className="grid grid-cols-[88px_1fr] gap-3 py-3.5">
+                <dt className="text-muted">{k}</dt>
+                <dd className="break-words">{v}</dd>
+              </div>
+            ))}
+          </dl>
+          <div className="mt-4 grid gap-2">
+            <Button disabled>Call shop (demo)</Button>
             <Button variant="outline" disabled>
-              Email shop · demo
+              Email shop (demo)
             </Button>
             {shop.website && (
               <Button asChild variant="outline">
@@ -91,21 +105,20 @@ export default async function ShopDetail({
           </div>
         </aside>
       </div>
-      <section className="section-space border-t">
-        <SectionHeading title="More specialists to explore" />
-        <div className="content-grid">
-          {shops
-            .filter(
-              (s) =>
-                s.id !== shop.id &&
-                s.category.some((c) => shop.category.includes(c)),
-            )
-            .slice(0, 3)
-            .map((s) => (
+      {related.length > 0 && (
+        <section className="section-space">
+          <SectionHeading
+            title="Similar shops"
+            href="/shops"
+            linkLabel="All shops"
+          />
+          <div className="content-grid">
+            {related.map((s) => (
               <ShopCard key={s.id} shop={s} />
             ))}
-        </div>
-      </section>
+          </div>
+        </section>
+      )}
     </div>
   );
 }

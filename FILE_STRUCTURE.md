@@ -43,12 +43,12 @@
 - `components/content-cards.tsx`
 - `components/content-lists.tsx`
 - `components/empty-state.tsx`
-- `components/event-card.tsx`
+- `components/generation-lineup.tsx`
 - `components/filter-bar.tsx`
 - `components/footer.tsx`
 - `components/gallery-card.tsx`
 - `components/guide-card.tsx`
-- `components/hero.tsx`
+- `components/content-cards.tsx` (journal, event row, gallery, guide)
 - `components/image-gallery.tsx`
 - `components/journal-card.tsx`
 - `components/map-placeholder.tsx`

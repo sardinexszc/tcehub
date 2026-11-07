@@ -1,170 +1,212 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { ArrowUpRight, MapPin, Images } from 'lucide-react';
+import { ChevronRight, MapPin } from 'lucide-react';
 import type { Journal, Event, Gallery, Guide } from '@/lib/mock-data';
 import { formatDate } from '@/lib/utils';
-import { Card } from '@/components/ui/card';
-import { CornerArrow } from '@/components/corner-arrow';
-const day = (date: string) =>
+const tz = { timeZone: 'Asia/Manila' } as const;
+export const day = (date: string) =>
+  new Intl.DateTimeFormat('en-PH', { day: 'numeric', ...tz }).format(
+    new Date(date),
+  );
+export const month = (date: string) =>
+  new Intl.DateTimeFormat('en-PH', { month: 'short', ...tz }).format(
+    new Date(date),
+  );
+export const weekday = (date: string) =>
+  new Intl.DateTimeFormat('en-PH', { weekday: 'short', ...tz }).format(
+    new Date(date),
+  );
+export const time = (date: string) =>
   new Intl.DateTimeFormat('en-PH', {
-    day: '2-digit',
-    timeZone: 'Asia/Manila',
+    hour: 'numeric',
+    minute: '2-digit',
+    ...tz,
   }).format(new Date(date));
-const month = (date: string) =>
-  new Intl.DateTimeFormat('en-PH', {
-    month: 'short',
-    timeZone: 'Asia/Manila',
-  }).format(new Date(date));
-function Frame({
-  href,
-  image,
-  title,
-  overlay,
+function Cover({
+  src,
+  alt,
+  ratio = 'aspect-[3/2]',
+  sizes = '(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw',
+  priority,
   children,
 }: {
-  href: string;
-  image: string;
-  title: string;
-  overlay?: React.ReactNode;
-  children: React.ReactNode;
+  src: string;
+  alt: string;
+  ratio?: string;
+  sizes?: string;
+  priority?: boolean;
+  children?: React.ReactNode;
 }) {
   return (
-    <Card className="group hover:border-foreground/25 hover:shadow-[0_18px_40px_-24px_hsl(var(--foreground)/0.35)]">
-      <Link href={href} className="flex h-full flex-col">
-        <div className="relative aspect-[16/10] overflow-hidden bg-subtle">
-          <Image
-            src={image}
-            alt={`${title} illustrative placeholder`}
-            fill
-            sizes="(max-width:640px) 100vw, (max-width:1024px) 50vw, 33vw"
-            className="media-mono object-cover group-hover:scale-[1.03]"
-          />
-          {overlay}
-          <CornerArrow className="absolute right-3 top-3" />
+    <div className={`relative overflow-hidden bg-subtle ${ratio}`}>
+      <Image
+        src={src}
+        alt={alt}
+        fill
+        sizes={sizes}
+        priority={priority}
+        className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+      />
+      {children}
+    </div>
+  );
+}
+const titleHover = 'group-hover:underline group-hover:underline-offset-4';
+export function JournalCard({
+  journal,
+  lead = false,
+}: {
+  journal: Journal;
+  lead?: boolean;
+}) {
+  return (
+    <article className="group">
+      <Link
+        href={`/journals/${journal.slug}`}
+        className={
+          lead ? 'grid gap-6 md:grid-cols-[1.4fr_1fr] md:gap-8' : 'block'
+        }
+      >
+        <Cover
+          src={journal.coverImage}
+          alt={`${journal.title}, illustrative placeholder`}
+          sizes={lead ? '(max-width:768px) 100vw, 60vw' : undefined}
+        />
+        <div className={lead ? 'self-center' : 'mt-4'}>
+          <p className="eyebrow">{journal.tags.join(' · ')}</p>
+          <h3
+            className={
+              lead
+                ? `display mt-3 text-3xl md:text-[2.5rem] ${titleHover}`
+                : `mt-1.5 text-lg font-semibold leading-snug ${titleHover}`
+            }
+          >
+            {journal.title}
+          </h3>
+          <p
+            className={`mt-2 text-muted ${lead ? 'text-base leading-7' : 'line-clamp-2 text-sm leading-6'}`}
+          >
+            {journal.excerpt}
+          </p>
+          <p className="mt-3 text-[13px] text-muted">
+            By{' '}
+            <span className="font-medium text-foreground">
+              {journal.author}
+            </span>{' '}
+            · {formatDate(journal.date)}
+          </p>
         </div>
-        <div className="flex flex-1 flex-col p-5">{children}</div>
       </Link>
-    </Card>
+    </article>
   );
 }
-export function JournalCard({ journal }: { journal: Journal }) {
-  return (
-    <Frame
-      href={`/journals/${journal.slug}`}
-      image={journal.coverImage}
-      title={journal.title}
-    >
-      <p className="meta">{journal.tags.join(' · ')}</p>
-      <h3 className="mt-2.5 text-lg font-medium tracking-[-0.02em]">
-        {journal.title}
-      </h3>
-      <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted">
-        {journal.excerpt}
-      </p>
-      <p className="mt-auto flex justify-between gap-3 border-t pt-4 text-[13px] text-muted">
-        <span>{journal.author}</span>
-        <span className="tabular-nums">{formatDate(journal.date)}</span>
-      </p>
-    </Frame>
-  );
-}
-export function EventCard({ event }: { event: Event }) {
-  return (
-    <Frame
-      href={`/events/${event.slug}`}
-      image={event.coverImage}
-      title={event.title}
-      overlay={
-        <span className="absolute left-3 top-3 flex flex-col items-center rounded-md bg-surface px-2.5 py-1.5 text-center leading-none shadow-sm">
-          <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-muted">
-            {month(event.date)}
-          </span>
-          <span className="mt-1 text-xl font-medium tabular-nums">
-            {day(event.date)}
-          </span>
-        </span>
-      }
-    >
-      <p className="meta">{event.type} · 7:00 AM PHT</p>
-      <h3 className="mt-2.5 text-lg font-medium tracking-[-0.02em]">
-        {event.title}
-      </h3>
-      <p className="mt-auto flex items-center gap-2 border-t pt-4 text-[13px] text-muted">
-        <MapPin size={14} aria-hidden="true" className="shrink-0" />
-        {event.location}
-      </p>
-    </Frame>
-  );
-}
-/** Compact hairline row, after the reference's membership-tier table. */
+/** Calendar row: date, title, type, place. Used on the home page and events page. */
 export function EventRow({ event }: { event: Event }) {
   return (
     <Link
       href={`/events/${event.slug}`}
-      className="group grid grid-cols-[56px_1fr_auto] items-center gap-4 px-4 py-5 transition-colors hover:!bg-subtle sm:grid-cols-[72px_1fr_1fr_auto] sm:gap-6 sm:px-6"
+      className="group grid grid-cols-[64px_1fr_auto] items-center gap-4 border-b py-5 sm:grid-cols-[88px_1.4fr_1fr_auto] sm:gap-6"
     >
       <span className="leading-none">
-        <span className="block font-mono text-[10px] uppercase tracking-[0.14em] text-muted">
+        <span className="block text-xs font-semibold uppercase tracking-[0.06em] text-accent">
           {month(event.date)}
         </span>
-        <span className="mt-1.5 block text-3xl font-medium tabular-nums tracking-[-0.03em]">
+        <span className="display mt-1 block text-4xl tabular-nums">
           {day(event.date)}
+        </span>
+        <span className="mt-1 block text-xs text-muted">
+          {weekday(event.date)}
         </span>
       </span>
       <span className="min-w-0">
-        <span className="meta block">{event.type}</span>
-        <span className="mt-1.5 block truncate text-base font-medium tracking-[-0.01em] sm:text-lg">
+        <span className="meta block">
+          {event.type} · {time(event.date)}
+        </span>
+        <span
+          className={`mt-1 block text-base font-semibold sm:text-lg ${titleHover}`}
+        >
           {event.title}
         </span>
+        <span className="mt-1 flex items-center gap-1.5 text-[13px] text-muted sm:hidden">
+          <MapPin size={13} aria-hidden="true" className="shrink-0" />
+          {event.location}
+        </span>
       </span>
-      <span className="hidden items-center gap-2 text-[13px] text-muted sm:flex">
+      <span className="hidden items-center gap-2 text-sm text-muted sm:flex">
         <MapPin size={14} aria-hidden="true" className="shrink-0" />
         {event.location}
       </span>
-      <CornerArrow className="bg-transparent ring-1 ring-border transition-colors group-hover:bg-accent group-hover:ring-transparent" />
+      <ChevronRight
+        size={18}
+        aria-hidden="true"
+        className="text-muted transition-colors group-hover:text-accent"
+      />
     </Link>
   );
 }
 export function GalleryCard({ gallery }: { gallery: Gallery }) {
   return (
-    <Frame
-      href={`/galleries/${gallery.slug}`}
-      image={gallery.coverImage}
-      title={gallery.title}
-      overlay={
-        <span className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-md bg-surface/90 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.12em] backdrop-blur">
-          <Images size={12} aria-hidden="true" />
-          {gallery.images.length} images
-        </span>
-      }
-    >
-      <h3 className="text-lg font-medium tracking-[-0.02em]">
-        {gallery.title}
-      </h3>
-      <p className="meta mt-3">{formatDate(gallery.date)}</p>
-    </Frame>
+    <article className="group">
+      <Link href={`/galleries/${gallery.slug}`} className="block">
+        <Cover
+          src={gallery.coverImage}
+          alt={`${gallery.title}, illustrative placeholder`}
+          ratio="aspect-[4/3]"
+        />
+        <h3 className={`mt-4 text-lg font-semibold leading-snug ${titleHover}`}>
+          {gallery.title}
+        </h3>
+        <p className="mt-1 text-[13px] text-muted">
+          {gallery.images.length} photos · {formatDate(gallery.date)}
+        </p>
+      </Link>
+    </article>
   );
 }
 export function GuideCard({ guide }: { guide: Guide }) {
   return (
-    <Frame
+    <article className="group">
+      <Link href={`/guides/${guide.slug}`} className="block">
+        <Cover
+          src={guide.coverImage}
+          alt={`${guide.title}, illustrative placeholder`}
+        />
+        <p className="eyebrow mt-4">
+          {guide.generation} · {guide.category}
+        </p>
+        <h3
+          className={`mt-1.5 text-lg font-semibold leading-snug ${titleHover}`}
+        >
+          {guide.title}
+        </h3>
+        <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted">
+          {guide.excerpt}
+        </p>
+      </Link>
+    </article>
+  );
+}
+/** Compact text row for guide lists: generation code, title, category. */
+export function GuideRow({ guide }: { guide: Guide }) {
+  return (
+    <Link
       href={`/guides/${guide.slug}`}
-      image={guide.coverImage}
-      title={guide.title}
+      className="group grid grid-cols-[64px_1fr_auto] items-baseline gap-4 border-b py-4"
     >
-      <p className="meta">
-        {guide.generation} · {guide.category}
-      </p>
-      <h3 className="mt-2.5 text-lg font-medium tracking-[-0.02em]">
-        {guide.title}
-      </h3>
-      <p className="mt-2 line-clamp-2 text-sm leading-6 text-muted">
-        {guide.excerpt}
-      </p>
-      <span className="mt-auto flex items-center gap-2 border-t pt-4 text-[13px] font-medium">
-        Read the guide
-        <ArrowUpRight size={14} aria-hidden="true" />
+      <span className="display text-xl">{guide.generation}</span>
+      <span>
+        <span className={`block font-semibold ${titleHover}`}>
+          {guide.title}
+        </span>
+        <span className="mt-0.5 block text-[13px] text-muted">
+          {guide.category}
+        </span>
       </span>
-    </Frame>
+      <ChevronRight
+        size={18}
+        aria-hidden="true"
+        className="self-center text-muted transition-colors group-hover:text-accent"
+      />
+    </Link>
   );
 }

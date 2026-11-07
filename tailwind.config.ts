@@ -19,11 +19,10 @@ export default {
         danger: token('danger'),
       },
       fontFamily: {
-        sans: ['var(--font-geist)', 'Inter', 'Arial', 'sans-serif'],
-        mono: ['var(--font-geist-mono)', 'ui-monospace', 'monospace'],
+        sans: ['var(--font-archivo)', 'Arial', 'sans-serif'],
       },
-      transitionTimingFunction: {
-        out: 'cubic-bezier(0.22, 1, 0.36, 1)',
+      borderRadius: {
+        DEFAULT: '2px',
       },
     },
   },

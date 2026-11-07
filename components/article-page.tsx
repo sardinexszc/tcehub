@@ -1,11 +1,12 @@
 import Image from 'next/image';
 import { Breadcrumbs } from '@/components/breadcrumbs';
 import { ArticleContent, articleSections } from '@/components/article-content';
-import { Badge } from '@/components/ui/badge';
 export function ArticlePage({
   title,
   cover,
-  meta,
+  excerpt,
+  byline,
+  date,
   tags,
   content,
   kind,
@@ -14,7 +15,9 @@ export function ArticlePage({
 }: {
   title: string;
   cover: string;
-  meta: string;
+  excerpt?: string;
+  byline: string;
+  date?: string;
   tags: string[];
   content: string;
   kind: string;
@@ -22,45 +25,56 @@ export function ArticlePage({
   children?: React.ReactNode;
 }) {
   return (
-    <div className="container-shell py-10">
+    <article className="container-shell pb-8 pt-8">
       <Breadcrumbs
         items={[
           { label: kind, href: `/${kind.toLowerCase()}` },
           { label: title },
         ]}
       />
-      <div className="mx-auto max-w-3xl">
-        <div className="mb-5 flex gap-2">
-          {tags.map((t) => (
-            <Badge key={t}>{t}</Badge>
-          ))}
+      <header className="max-w-4xl">
+        <p className="eyebrow">{tags.join(' · ')}</p>
+        <h1 className="display mt-3 text-4xl md:text-6xl">{title}</h1>
+        {excerpt && (
+          <p className="mt-5 max-w-2xl text-lg leading-8 text-muted md:text-xl">
+            {excerpt}
+          </p>
+        )}
+        <p className="mt-6 border-t pt-4 text-sm">
+          By <span className="font-semibold">{byline}</span>
+          {date && <span className="text-muted"> · {date}</span>}
+        </p>
+      </header>
+      <figure className="my-10">
+        <div className="relative aspect-[16/9] overflow-hidden bg-subtle md:aspect-[21/9]">
+          <Image
+            src={cover}
+            alt={`${title}, illustrative placeholder`}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
         </div>
-        <h1 className="page-title">{title}</h1>
-        <p className="my-6 text-sm text-muted">{meta}</p>
-      </div>
-      <div className="relative my-10 aspect-[16/7] overflow-hidden rounded-xl border">
-        <Image
-          src={cover}
-          alt={`${title} illustrative placeholder`}
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-        />
-      </div>
+        <figcaption className="mt-2 text-xs text-muted">
+          Illustration. Replace with the owner’s photography.
+        </figcaption>
+      </figure>
       <div
-        className={`mx-auto grid max-w-5xl gap-12 ${toc ? 'lg:grid-cols-[1fr_220px]' : 'max-w-3xl'}`}
+        className={`grid gap-12 ${toc ? 'max-w-5xl lg:grid-cols-[200px_1fr]' : 'max-w-2xl'}`}
       >
-        <ArticleContent content={content} />
         {toc && (
-          <aside className="order-first h-fit rounded-xl border bg-surface p-5 lg:sticky lg:top-28 lg:order-last">
-            <h2 className="meta mb-4">In this guide</h2>
-            <nav aria-label="Table of contents" className="grid gap-4">
+          <aside className="h-fit lg:sticky lg:top-24">
+            <h2 className="meta mb-3">In this guide</h2>
+            <nav
+              aria-label="Table of contents"
+              className="grid border-l-2 text-sm"
+            >
               {articleSections(content).map((s) => (
                 <a
                   key={s.id}
                   href={`#${s.id}`}
-                  className="text-sm text-muted transition-colors hover:text-foreground"
+                  className="-ml-0.5 border-l-2 border-transparent py-1.5 pl-3 text-muted hover:border-accent hover:text-foreground"
                 >
                   {s.title}
                 </a>
@@ -68,8 +82,11 @@ export function ArticlePage({
             </nav>
           </aside>
         )}
+        <div className="max-w-2xl">
+          <ArticleContent content={content} />
+        </div>
       </div>
       {children}
-    </div>
+    </article>
   );
 }

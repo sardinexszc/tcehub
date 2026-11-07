@@ -10,39 +10,37 @@ export default function Contact() {
   return (
     <div className="container-shell pb-16 pt-10 md:pt-14">
       <PageHeader
-        kicker="Let’s build a better directory"
-        title={
-          <>
-            Good recommendations
-            <br />
-            start with you.
-          </>
-        }
+        title="Contact"
+        description="Recommend a shop, pitch a build journal, or ask a question."
       />
-      <div className="grid gap-10 md:grid-cols-[1fr_1.2fr] md:gap-14">
-        <div>
-          <h2 className="text-2xl font-medium tracking-[-0.02em]">
-            Get in touch
-          </h2>
-          <p className="mt-4 max-w-md leading-7 text-muted">
-            Have a story idea, a question, or a shop worth sharing? Use the
-            preview form to see what a submission will look like.
-          </p>
-          <p className="meta mt-8">
-            Community contact details will be added before launch.
-          </p>
+      <div className="grid gap-12 md:grid-cols-[1fr_1.3fr] md:gap-16">
+        <div className="space-y-8">
+          <div>
+            <h2 className="text-lg font-semibold">Recommending a shop</h2>
+            <p className="mt-2 max-w-md leading-7 text-muted">
+              Tell us the shop’s name and city, what they worked on, and which
+              Camry you drive. One good experience is enough to start.
+            </p>
+          </div>
+          <div>
+            <h2 className="text-lg font-semibold">Everything else</h2>
+            <p className="mt-2 max-w-md leading-7 text-muted">
+              Story ideas, event listings, and corrections can go through the
+              same form for now. A direct email address will be added before
+              launch.
+            </p>
+          </div>
         </div>
         <section
           id="submit-shop"
           aria-labelledby="submit-shop-title"
-          className="scroll-mt-24 rounded-2xl border bg-surface p-5 sm:p-6 md:p-8"
+          className="scroll-mt-24 border-t-2 border-foreground pt-6"
         >
-          <p className="eyebrow mb-4">Submission</p>
           <h2
             id="submit-shop-title"
-            className="mb-7 text-2xl font-medium tracking-[-0.02em]"
+            className="section-title mb-6 text-2xl md:text-3xl"
           >
-            Submit a Shop
+            Submit a shop
           </h2>
           <ContactForm />
         </section>

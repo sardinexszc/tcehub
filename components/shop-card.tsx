@@ -1,53 +1,48 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { MapPin, Star } from 'lucide-react';
+import { Star } from 'lucide-react';
 import type { Shop } from '@/lib/mock-data';
-import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card';
-import { CornerArrow } from '@/components/corner-arrow';
 export function ShopCard({ shop }: { shop: Shop }) {
   return (
-    <Card className="group hover:border-foreground/25 hover:shadow-[0_18px_40px_-24px_hsl(var(--foreground)/0.35)]">
+    <article className="group">
       <Link href={`/shops/${shop.slug}`} className="block">
-        <div className="relative aspect-[16/10] overflow-hidden bg-subtle">
+        <div className="relative aspect-[4/3] overflow-hidden bg-subtle">
           <Image
             src={shop.images[0]}
-            alt={`${shop.name} illustrative placeholder`}
+            alt={`${shop.name}, illustrative placeholder`}
             fill
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-            className="media-mono object-cover group-hover:scale-[1.03]"
+            className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
           />
           {shop.featured && (
-            <Badge className="absolute left-3 top-3 border-transparent bg-accent text-accent-foreground">
+            <span className="absolute left-0 top-0 bg-foreground px-2.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.06em] text-background">
               Featured
-            </Badge>
-          )}
-          <CornerArrow className="absolute right-3 top-3" />
-        </div>
-        <div className="p-5">
-          <p className="meta">{shop.category.join(' · ')}</p>
-          <h3 className="mt-2.5 text-lg font-medium tracking-[-0.02em]">
-            {shop.name}
-          </h3>
-          <div className="mt-5 flex items-center justify-between gap-2 border-t pt-4 text-[13px] text-muted">
-            <span className="flex items-center gap-1.5">
-              <MapPin size={14} aria-hidden="true" />
-              {shop.city}
             </span>
-            {shop.rating && (
-              <span className="flex items-center gap-1 tabular-nums text-foreground">
-                <Star
-                  size={13}
-                  aria-hidden="true"
-                  className="fill-foreground text-foreground"
-                />
-                {shop.rating.toFixed(1)}
-                <span className="sr-only">demo rating</span>
-              </span>
-            )}
-          </div>
+          )}
         </div>
+        <p className="eyebrow mt-4">{shop.category.join(' · ')}</p>
+        <h3 className="mt-1.5 text-lg font-semibold leading-snug group-hover:underline group-hover:underline-offset-4">
+          {shop.name}
+        </h3>
       </Link>
-    </Card>
+      <dl className="mt-3 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-[13px]">
+        <dt className="text-muted">Location</dt>
+        <dd>
+          {shop.city}, {shop.region}
+        </dd>
+        <dt className="text-muted">Services</dt>
+        <dd>{shop.generations.join(', ')}</dd>
+        {shop.rating && (
+          <>
+            <dt className="text-muted">Rating</dt>
+            <dd className="flex items-center gap-1 tabular-nums">
+              <Star size={12} aria-hidden="true" className="fill-foreground" />
+              {shop.rating.toFixed(1)}
+              <span className="text-muted">(demo)</span>
+            </dd>
+          </>
+        )}
+      </dl>
+    </article>
   );
 }

@@ -31,14 +31,15 @@ export default async function Page({
     <ArticlePage
       title={item.title}
       cover={item.coverImage}
-      meta={'TCEHub Editorial · General ownership guidance'}
+      excerpt={item.excerpt}
+      byline="TCEHub Editorial"
       tags={[item.generation, item.category]}
       content={item.content}
       kind="Guides"
       toc={true}
     >
-      <section className="section-space mt-14 border-t">
-        <SectionHeading title="Keep exploring" />
+      <section className="section-space mt-10">
+        <SectionHeading title="More guides" href="/guides" />
         <div className="content-grid">
           {guides
             .filter((i) => i.id !== item.id)

@@ -10,7 +10,7 @@ import {
 } from '@/lib/mock-data';
 import {
   JournalCard,
-  EventCard,
+  EventRow,
   GalleryCard,
   GuideCard,
 } from '@/components/content-cards';
@@ -26,7 +26,7 @@ export function JournalList() {
         {['all', ...new Set(journals.flatMap((j) => j.tags))].map((t) => (
           <Button
             key={t}
-            variant={tag === t ? 'default' : 'outline'}
+            variant={tag === t ? 'ink' : 'outline'}
             size="sm"
             aria-pressed={tag === t}
             onClick={() => setTag(t)}
@@ -52,7 +52,7 @@ export function EventList() {
   return (
     <>
       <div
-        className="mb-6 inline-flex gap-1 rounded-lg border bg-surface p-1"
+        className="mb-6 flex gap-6 border-b"
         role="tablist"
         aria-label="Event timeline"
       >
@@ -65,8 +65,8 @@ export function EventList() {
             aria-selected={tab === t}
             tabIndex={tab === t ? 0 : -1}
             size="sm"
-            variant={tab === t ? 'default' : 'ghost'}
-            className="min-w-24 capitalize"
+            variant="ghost"
+            className={`-mb-px h-11 rounded-none border-b-2 px-0 text-sm uppercase tracking-[0.06em] hover:bg-transparent ${tab === t ? 'border-accent' : 'border-transparent text-muted hover:text-foreground'}`}
             onClick={() => setTab(t)}
             onKeyDown={(e) => {
               if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
@@ -80,17 +80,18 @@ export function EventList() {
           </Button>
         ))}
       </div>
-      <p className="meta mb-8">
-        Demo calendar reference: October 13, 2026. Events are fictional.
+      <p className="mb-6 text-[13px] text-muted">
+        Showing dates relative to October 13, 2026 (demo calendar). All events
+        are fictional.
       </p>
       <div
         id="event-panel"
         role="tabpanel"
         aria-labelledby={`tab-${tab}`}
-        className="content-grid"
+        className="border-t"
       >
         {list.map((e) => (
-          <EventCard key={e.id} event={e} />
+          <EventRow key={e.id} event={e} />
         ))}
         {!list.length && <EmptyState title="No events yet" />}
       </div>

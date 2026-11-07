@@ -28,7 +28,7 @@ export function Pagination({
       {Array.from({ length: total }, (_, i) => (
         <Button
           key={i}
-          variant={page === i + 1 ? 'default' : 'outline'}
+          variant={page === i + 1 ? 'ink' : 'outline'}
           size="icon"
           aria-label={`Page ${i + 1}`}
           aria-current={page === i + 1 ? 'page' : undefined}

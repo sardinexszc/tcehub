@@ -10,7 +10,7 @@ export function SelectTrigger({
 }: React.ComponentProps<typeof Primitive.Trigger>) {
   return (
     <Primitive.Trigger
-      className="flex h-11 w-full cursor-pointer items-center justify-between gap-3 rounded-md border bg-surface px-3 text-sm transition-colors hover:border-foreground/30"
+      className="flex h-11 w-full cursor-pointer items-center justify-between gap-3 rounded border border-foreground/20 bg-surface px-3 text-sm transition-colors hover:border-foreground/50"
       {...props}
     >
       {children}
@@ -27,7 +27,7 @@ export function SelectContent({
     <Primitive.Portal>
       <Primitive.Content
         position="popper"
-        className="z-50 max-h-72 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded-lg border bg-surface p-1 shadow-[0_12px_32px_-12px_hsl(var(--foreground)/0.25)]"
+        className="z-50 max-h-72 min-w-[var(--radix-select-trigger-width)] overflow-hidden rounded border bg-surface p-1 shadow-lg"
       >
         <Primitive.Viewport>{children}</Primitive.Viewport>
       </Primitive.Content>
@@ -40,7 +40,7 @@ export function SelectItem({
 }: React.ComponentProps<typeof Primitive.Item>) {
   return (
     <Primitive.Item
-      className="relative cursor-pointer rounded-md px-8 py-2 text-sm outline-none data-[highlighted]:bg-subtle data-[state=checked]:font-medium"
+      className="relative cursor-pointer rounded px-8 py-2 text-sm outline-none data-[highlighted]:bg-subtle data-[state=checked]:font-medium"
       {...props}
     >
       <Primitive.ItemText>{children}</Primitive.ItemText>
